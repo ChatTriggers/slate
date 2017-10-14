@@ -47,7 +47,7 @@ Make the extension of the file be the normal extension for your specified langua
 
 # The Basics
 
-##Registering a Trigger
+## Registering a Trigger
 
 >We register a WorldLoad trigger like so:
 
@@ -63,7 +63,7 @@ So, we want to start of by listening to one of these, let's start with one of th
 What we're doing here is calling a method in the "TriggerRegister" class that registers "exampleImportWorldLoad" as a trigger
 to be activated when the world is loaded. However, there is no function with that name yet!
 
-##Receiving the Event
+## Receiving the Event
 
 ```javascript
 TriggerRegister.registerWorldLoad("exampleImportWorldLoad");
@@ -78,7 +78,7 @@ and many other things.
 
 <aside class="notice">Multiple triggers can refer to one function.</aside>
 
-##Responding to an Event
+## Responding to an Event
 
 ```javascript
 TriggerRegister.registerWorldLoad("exampleImportWorldLoad");
@@ -92,3 +92,52 @@ One of the things we can do inside of function is send a message to the player.
 
 The best way to interact with Minecraft's chat is via the `ChatLib` class. It is accessed very simply through the
 variable ChatLib. A list of the methods it provides can be found in the documentation [here](http://ct.kerbybit.com/ct.js/com/chattriggers/ctjs/libs/ChatLib.html).
+
+## A more complicated Trigger
+
+> A chat trigger that gets fired on the chat message <code>&lt;FalseHonesty&gt; Hello World!</code>
+
+```javascript
+TriggerRegister.registerChat("exampleImportChat").setChatCriteria("<${*}> ${message}");
+
+function exampleImportChat(message) {
+  
+}
+```
+
+This function receives chat messages based on a certain criteria. If a received chat message follows the pattern
+put in `.setChatCriteria()`, then the function will be called. `${variableName}` creates a variable in the criteria, and when the event
+is fired, its value is passed into the function.
+
+`TriggerRegister.registerChat()` and `.setChatCriteria()` return the created trigger, so you can chain configuration methods.
+A list of these are found in the documentation for each specific trigger type, you can find the available modifications
+[here](http://ct.kerbybit.com/ct.js/com/chattriggers/ctjs/triggers/TriggerRegister.html#registerChat-java.lang.String-).
+
+<aside class="notice"><code>${*}</code> creates a variable that isn't passed into the function</aside>
+
+## Canceling events
+
+> To cancel a cancelable event, do this:
+
+```javascript
+TriggerRegister.registerChat("exampleImportChat").setChatCriteria("<${*}> ${message}");
+
+function exampleImportChat(message, event) {
+  event.setCanceled(true);
+  
+  ChatLib.chat("I did cancel this: " + message + "!");
+}
+```
+
+> The event parameter is optional, so this works just the same if you don't need to use the event
+
+```javascript
+TriggerRegister.registerChat("exampleImportChat").setChatCriteria("<${*}> ${message}");
+
+function exampleImportChat(message) {
+  ChatLib.chat("I didn't cancel this: " + message + "!");
+}
+```
+
+Some events are cancelable, like chat events. If it is cancelable, the last parameter passed into the function will always
+be the event
