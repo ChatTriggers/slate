@@ -65,6 +65,8 @@ to be activated when the world is loaded. However, there is no function with tha
 
 ## Receiving the Event
 
+>We create the function to be called by the trigger like so:
+
 ```javascript
 TriggerRegister.registerWorldLoad("exampleImportWorldLoad");
 
@@ -79,6 +81,8 @@ and many other things.
 <aside class="notice">Multiple triggers can refer to one function.</aside>
 
 ## Responding to an Event
+
+>For code to be activated by a trigger, simply put it in your function called by that registered trigger
 
 ```javascript
 TriggerRegister.registerWorldLoad("exampleImportWorldLoad");
@@ -141,3 +145,66 @@ function exampleImportChat(message) {
 
 Some events are cancelable, like chat events. If it is cancelable, the last parameter passed into the function will always
 be the event
+
+# Rendering
+
+## Setting up
+
+> Function to be ran everytime the game overlay is rendered
+
+```javascript
+TriggerRegister.registerRenderOverlay("exampleImportRenderOverlay");
+
+function exampleImportRenderOverlay() {
+  
+}
+```
+
+Rendering has to be done every frame of the game, otherwise it will only be on the screen for one frame.
+The RenderOverlay Trigger is called every frame of the game, so it is required for rendering. All of the actual
+rendering code will go inside this function, although it could be seperated into seperate ones.
+
+## Setting priority
+
+>It is possible to set a certain trigger's priority like so:
+
+```javascript
+TriggerRegister.registerRenderOverlay("exampleImportRenderOverlayLast").setPriority(Priority.LOWEST);
+TriggerRegister.registerRenderOverlay("exampleImportRenderOverlayFirst").setPriority(Priority.HIGHEST);
+
+function exampleImportRenderOverlayLast() {
+  
+}
+
+function exampleImportRenderOverlayFirst() {
+  
+}
+```
+
+Here, were are dealing with the priority of triggers. Priorities are `LOWEST, LOW, NORMAL, HIGH, HIGHEST`.
+Triggers with a priority of HIGHEST are ran first, because they have first say on an event. Triggers with a priority of LOWEST
+then, are ran last.
+
+<aside class="notice">All trigger types can have a priority set, it's just most commonly used in rendering</aside>
+
+## Simple text rendering
+
+>You can render text onto the screen with this code:
+
+```javascript
+TriggerRegister.registerRenderOverlay("exampleImportRenderOverlay");
+
+function exampleImportRenderOverlay() {
+  RenderLib.drawString("Hello World!", 10, 10, RenderLib.color(255, 255, 255, 255));
+}
+```
+
+Every frame, the code inside `exampleImportRenderOverlay` is called. Inside of this function, we make one call
+to `RenderLib.drawString(text, screenX, screenY, color)`. We make the text say "Hello World!", and place it on the screen
+at 10, 10 (the top left corner). The other interesting part to take a look at is the 4th argument, which is the color of the
+text. For the color, we make a call to `RenderLib.color(red, green, blue, alpha)`. In this example, the text will be white.
+
+<aside class="warning">If all you are rendering is text, it is preferable to use Display objects, covered later.</aside>
+
+## Rendering of shapes
+
