@@ -1,239 +1,94 @@
 ---
-title: API Reference
+title: ct.js Tutorial
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
   - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
+  - <a href='http://chattriggers.com'>ChatTriggers Website</a>
+  - <a href='https://discordapp.com/invite/0fNjZyopOvBHZyG8'>ChatTriggers Discord</a>
   - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
-
+  
 includes:
-  - errors
+- triggers
 
 search: true
 ---
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+ct.js is a framework for Minecraft Forge that allows for mods to be scripted, in languages such as JavaScript.
+Scripts are able to be hot reloaded, which means you can make changes to your mod without restarting!
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+<aside class="warning">Currently, only JavaScript is supported.</aside>
 
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+JavaScript scripts are executed with Java's [Nashorn](http://openjdk.java.net/projects/nashorn/) library,
+which means you can use all extensions it includes, found [here](https://wiki.openjdk.java.net/display/Nashorn/Nashorn+extensions).
 
-# Authentication
+<aside class="success">JavaScript <em>can</em> access Minecraft classes.</aside>
 
-> To authorize, use this code:
+# Setup
 
-```ruby
-require 'kittn'
+To setup a ct.js coding environment, all you have to do is put the ct.js jar into your `.minecraft/mods` folder, and launch 
+Minecraft. In your mods folder, you will get a folder structure automatically created. The structure should be<br/>
+ `.minecraft/mods/ChatTriggers/Imports` and `.minecraft/mods/ChatTriggers/libs`.
+ 
+# Creating an Import
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+To create an import, create a folder in your `.minecraft/mods/ChatTriggers/Imports` folder, and have it's name be the name
+of your import. Our import will be called Example. Our folder structure now looks like<br/> `.minecraft/mods/ChatTriggers/Imports/Example/`.
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
+We now need to create our scripts, so create a file in the folder named whatever you would like, the name is only for your
+own management of the import. We'll call our main file `main`.
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+Make the extension of the file be the normal extension for your specified language, i.e. main.js for JavaScript.
 </aside>
 
-# Kittens
+# The Basics
 
-## Get All Kittens
+##Registering a Trigger
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
+>We register a WorldLoad trigger like so:
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+TriggerRegister.registerWorldLoad("exampleImportWorldLoad");
 ```
 
-> The above command returns JSON structured like this:
+The base of ct.js imports are "Triggers". These are events that get fired when a certain action happens in game,
+like a sound is played, or chat message is received. A full list of these is at the <a href="#triggers">bottom of the page</a>.
+ 
+So, we want to start of by listening to one of these, let's start with one of the simplest, WorldLoad.
 
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
+What we're doing here is calling a method in the "TriggerRegister" class that registers "exampleImportWorldLoad" as a trigger
+to be activated when the world is loaded. However, there is no function with that name yet!
 
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
+##Receiving the Event
 
 ```javascript
-const kittn = require('kittn');
+TriggerRegister.registerWorldLoad("exampleImportWorldLoad");
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+function exampleImportWorldLoad() {
+  
 }
 ```
 
-This endpoint retrieves a specific kitten.
+Everything inside of this function is ran when the world loads. From here we can call other methods, interact with Minecraft,
+and many other things. 
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+<aside class="notice">Multiple triggers can refer to one function.</aside>
 
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
+##Responding to an Event
 
 ```javascript
-const kittn = require('kittn');
+TriggerRegister.registerWorldLoad("exampleImportWorldLoad");
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
+function exampleImportWorldLoad() {
+  ChatLib.chat("&6Gold Text says that the world has just loaded!");
 }
 ```
 
-This endpoint retrieves a specific kitten.
+One of the things we can do inside of function is send a message to the player.
 
-### HTTP Request
-
-`DELETE http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
-
+The best way to interact with Minecraft's chat is via the `ChatLib` class. It is accessed very simply through the
+variable ChatLib. A list of the methods it provides can be found in the documentation [here](http://ct.kerbybit.com/ct.js/com/chattriggers/ctjs/libs/ChatLib.html).
