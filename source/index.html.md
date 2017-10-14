@@ -148,6 +148,8 @@ be the event
 
 # Rendering
 
+<aside class="notice">All rendering coordinates start at the top left of the screen!</aside>
+
 ## Setting up
 
 > Function to be ran everytime the game overlay is rendered
@@ -201,10 +203,38 @@ function exampleImportRenderOverlay() {
 
 Every frame, the code inside `exampleImportRenderOverlay` is called. Inside of this function, we make one call
 to `RenderLib.drawString(text, screenX, screenY, color)`. We make the text say "Hello World!", and place it on the screen
-at 10, 10 (the top left corner). The other interesting part to take a look at is the 4th argument, which is the color of the
+at 10, 10 (the top left corner).
+
+The other interesting part to take a look at is the 4th argument, which is the color of the
 text. For the color, we make a call to `RenderLib.color(red, green, blue, alpha)`. In this example, the text will be white.
 
 <aside class="warning">If all you are rendering is text, it is preferable to use Display objects, covered later.</aside>
 
 ## Rendering of shapes
 
+>This example renders a rectangle, circle, and triangle
+
+```javascript
+TriggerRegister.registerRenderOverlay("exampleImportRenderOverlay");
+
+function exampleImportRenderOverlay() {
+  var white = RenderLib.color(255, 255, 255, 255);
+  
+  RenderLib.drawRectangle(white, 10, 10, 50, 50);
+  RenderLib.drawShape(white, 360, 100, 100, 25);
+  RenderLib.drawPolygon(white, [300, 300], [400, 400], [200, 400]);
+}
+```
+
+In our rendering function we are now drawing a bunch of shapes with a bunch of different methods.
+The first line is simply a variable keeping the color white so we don't have to repeat ourselves so much.
+
+The first actual rendering line is the call to `RenderLib.drawRectangle(color, screenX, screenY, width, height);`.
+In this example, its a simple 50x50 square, starting at (10,10) on the player's screen.
+
+The second line that does rendering calls the `RenderLib.drawShape(color, segments, screenX, screenY, radius);` method.
+This one draws a perfect shape with that number of segments. 3 would draw a perfect triangle, 5 a pentagon. This could be 
+used instead of the next line to draw a triangle, or the line before for a square. For this example, it draws a circle.
+
+The last line makes use of the `RenderLib.drawPolygon(color, [x, y]...);` method. It can take as many arrays with x,y
+coordinates as you pass it to add more and more points. This example is used to make a triangle.
