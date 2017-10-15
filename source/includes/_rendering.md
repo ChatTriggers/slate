@@ -51,7 +51,7 @@ then, are ran last.
 TriggerRegister.registerRenderOverlay("exampleImportRenderOverlay");
 
 function exampleImportRenderOverlay() {
-  RenderLib.drawString("Hello World!", 10, 10, RenderLib.color(255, 255, 255, 255));
+  RenderLib.drawString("Hello World!", 10, 10, RenderLib.WHITE);
 }
 ```
 
@@ -60,7 +60,8 @@ to `RenderLib.drawString(text, screenX, screenY, color)`. We make the text say "
 at 10, 10 (the top left corner).
 
 The other interesting part to take a look at is the 4th argument, which is the color of the
-text. For the color, we make a call to `RenderLib.color(red, green, blue, alpha)`. In this example, the text will be white.
+text. For the color, we use a preset color in RenderLib. We could have also made a call to `RenderLib.color(red, green, blue, alpha)`.
+In this example, that call would be RenderLib.color(255, 255, 255, 255). Values should range from 0-255.
 
 <aside class="warning">If all you are rendering is text, it is preferable to use Display objects, covered <a href="#displays">later</a>.</aside>
 
@@ -72,7 +73,7 @@ text. For the color, we make a call to `RenderLib.color(red, green, blue, alpha)
 TriggerRegister.registerRenderOverlay("exampleImportRenderOverlay");
 
 function exampleImportRenderOverlay() {
-  var white = RenderLib.color(255, 255, 255, 255);
+  var white = RenderLib.WHITE;
   
   RenderLib.drawRectangle(white, 10, 10, 50, 50);
   RenderLib.drawShape(white, 360, 100, 100, 25);
@@ -170,7 +171,7 @@ TriggerRegister.registerRenderOverlay("exampleImportRenderOverlay");
 
 function exampleImportRenderOverlay() {
   var renderWidth = RenderLib.getRenderWidth();
-  var white = RenderLib.color(255, 255, 255, 255);
+  var white = RenderLib.WHITE;
   
   var textToRender = "Rainbows!";
   RenderLib.drawString(textToRender, (renderWidth / 2) - (RenderLib.getStringWidth(textToRender) / 2),
