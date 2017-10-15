@@ -3,6 +3,9 @@
 ct.js provides several objects to expand the functionality of your imports without you needing to delve into base
 Minecraft code. A list is found below.
 
+<aside class="warning">It is bad practice to create new object every time you use it, they're heavy object.
+Create one in the global scope, and refer back to it.</aside>
+
 Object | Description
 ------ | -----------
 Book | Makes an openable book in Minecraft
@@ -26,9 +29,6 @@ var book = new Book("Example Book");
 
 We create our book with the Book constructor of `new Book(bookName);`. We want to create our book in the global scope,
 as explained below.
-
-<aside class="warning">It is preferable to not create a new book every time you wish to display it, they're slightly
-heavy objects.</aside>
 
 ### Adding content
 
@@ -81,5 +81,104 @@ arrows to go to the next available page.
 
 Displays are used for rendering simple text on to the players screen. If you would like to utilize other rendering
 functions found in [the rendering section](#rendering), use custom rendering functions.
+
+### Creation
+
+> This is how you can create a Display object
+
+```javascript
+var display = new Display();
+```
+
+This display object is now created, but it doesn't do much of anything yet.
+
+### Adding content
+
+> This is how you add lines to a display
+
+```javascript
+var display = new Display();
+
+display.addLine("Ay! First line.");
+display.addLines("2nd line", "3rd line");
+display.addLines(2);
+```
+
+Displays consist of lines of text. These lines can be added and set, and they can use color codes. The first call to
+`.addLine(message)` adds a line to the display with the text passed in. The second call to `.addLines(messages...)` adds
+as many lines as you pass into it, in our case just 2. The final call to `.addLines(number)` adds as many lines as
+you pass in, this is used for setting lines later that you don't want to say anything yet.
+
+### Setting content
+
+> This is how you set a line in a display
+
+```javascript
+display.setLine(3, "Now this line has text :)");
+```
+
+In this example the call to `.setLine(lineNumber, message)` sets the 4th line in the display (0 based) which was previously
+blank to our example text. This is what we would use if we want to update a display with information, like the player's
+current coordinates.
+
+
+### Setting positioning
+
+> This is how you set the alignment of a display
+
+```javascript
+display.setAlign(DisplayHandler.Align.LEFT);
+```
+
+This aligns your display on the left side of the screen. Other options are `CENTER` and `RIGHT`.
+
+> This is how you set the order of the lines
+
+```javascript
+display.setOrder(DisplayHandler.Order.DOWN);
+```
+
+This renders the lines from 0 going downwards, usually what you'd want. Other options are `UP`.
+
+> This is how you set the exact position of the display
+
+```javascript
+display.setRenderLoc(10, 10);
+```
+
+This sets the X and Y coordinate of where your display should start, with the first argument being X, and the second Y.
+
+### Setting background and foreground options
+
+> This sets the background color of the display
+
+```javascript
+display.setBackgroundColor(RenderLib.ORANGE);
+```
+
+This makes the background color of the display orange. Other options are all the colors in RenderLib, or a custom color
+with `RenderLib.color(r, g, b, a)`.
+
+> This sets the type of background for the display
+
+```javascript
+display.setBackground(DisplayHandler.Background.PER_LINE);
+```
+
+This option sets how the background color should be displayed. `PER_LINE` says that the background should be the width
+of each line. `NONE` would mean don't show background color, and `FULL` would indicate make the background color draw in
+a box around the entire display.
+
+> This sets the foreground (text) color of the display
+
+```javascript
+display.setTextColor(RenderLib.BLUE);
+```
+
+All text in the display will now show blue. This method can take any RenderLib color, including custom ones described above.
+
+## Guis
+
+Guis are screens that are opened in game, such as the chat gui, or the escape menu. These stop the player from moving.
 
 ### Creation
