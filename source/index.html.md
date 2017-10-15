@@ -100,7 +100,7 @@ variable ChatLib. A list of the methods it provides can be found in the document
 
 ## A more complicated Trigger
 
-> A chat trigger that gets fired on the chat message <code>&lt;FalseHonesty&gt; Hello World!</code>
+>A chat trigger that gets fired on the chat message <code>&lt;FalseHonesty&gt; Hello World!</code>
 
 ```javascript
 TriggerRegister.registerChat("exampleImportChat").setChatCriteria("<${*}> ${message}");
@@ -122,7 +122,7 @@ A list of these are found in the documentation for each specific trigger type, y
 
 ## Canceling events
 
-> To cancel a cancelable event, do this:
+>To cancel a cancelable event, do this:
 
 ```javascript
 TriggerRegister.registerChat("exampleImportChat").setChatCriteria("<${*}> ${message}");
@@ -134,7 +134,7 @@ function exampleImportChat(message, event) {
 }
 ```
 
-> The event parameter is optional, so this works just the same if you don't need to use the event
+>The event parameter is optional, so this works just the same if you don't need to use the event
 
 ```javascript
 TriggerRegister.registerChat("exampleImportChat").setChatCriteria("<${*}> ${message}");
