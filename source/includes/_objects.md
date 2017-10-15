@@ -11,8 +11,8 @@ Object | Description
 [Book](#books) | Makes an openable book in Minecraft
 [Display](#displays) | Renders text on to the game screen
 [Gui](#guis) | Makes an openable gui in Minecraft
-KeyBind | Used for detecting a key's state
-XMLHttpRequest | Used for making an HTTP request
+[KeyBind](#keybinds) | Used for detecting a key's state
+[XMLHttpRequest](#xmlhttprequests) | Used for making an HTTP request
 Thread | This is a pseudo object, used to do tasks that take a long time
 
 # Books
@@ -324,3 +324,5 @@ if you are holding down the key.
 
 Now, in the second example, we would only get the chat message once every time we press and hold the key. It only
 returns true one time per key press. If you let go and press again, it will return true once more.
+
+# XMLHttpRequests
