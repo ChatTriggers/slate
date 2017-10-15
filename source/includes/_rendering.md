@@ -62,7 +62,7 @@ at 10, 10 (the top left corner).
 The other interesting part to take a look at is the 4th argument, which is the color of the
 text. For the color, we make a call to `RenderLib.color(red, green, blue, alpha)`. In this example, the text will be white.
 
-<aside class="warning">If all you are rendering is text, it is preferable to use Display objects, covered later.</aside>
+<aside class="warning">If all you are rendering is text, it is preferable to use Display objects, covered <a href="#displays">later</a>.</aside>
 
 ## Rendering of shapes
 
