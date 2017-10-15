@@ -1,5 +1,7 @@
 # Rendering
 
+Rendering is where imports can draw most anything on to the game screen.
+
 <aside class="notice">All rendering coordinates start at the top left of the screen!</aside>
 
 ## Setting up
