@@ -265,3 +265,62 @@ gui.close();
 ```
 
 These very simple methods open and close the gui, and neither take any arguments.
+
+# KeyBinds
+
+KeyBinds are used for detecting the state of a key.
+
+<aside class="notice">These aren't meant to be used for Guis, it's preferable to register a keytyped method for detecting
+if a player pressed a key inside your Gui</aside>
+
+## Creation
+
+> This is the preferred method to get a keybind
+
+```javascript
+var wKeyBind = getKeyBindFromKey(Keyboard.KEY_W, "My W Key");
+
+function getKeyBindFromKey(key, description) {
+  var mcKeyBind = MinecraftVars.getKeyBindFromKey(key);
+  
+  if (mcKeyBind == null || mcKeyBind == undefined) {
+      mcKeyBind = new KeyBind(description, key);
+  }
+  
+  return mcKeyBind;
+}
+```
+
+Let's break this down. First, we call the function "getKeyBindFromKey" and save the result in a variable. This result
+is our finished KeyBind. We pass into this function a keyCode, from the [Keyboard](http://legacy.lwjgl.org/javadoc/org/lwjgl/input/Keyboard.html) class.
+
+Next, we have our function. First, it tries to get the Keybind for our specified key from MinecraftVars. We do this
+because if we want a keybind Minecraft already uses, we don't want to override it. However, if Minecraft isn't using
+that key (because the function returned null), we need to make our own, with the description and key we specified.
+
+In our case, this will return the keybind already used by minecraft for the run key (unless of course you changed yours
+to a different key).
+
+## Using the keybind
+
+> To check if they key bind is being held, do this
+
+```javascript
+if (wKeyBind.isKeyDown()) {
+    ChatLib.chat("Key is down!");
+}
+```
+
+> To check if the key bind was pressed, use this
+
+```javascript
+if (wKeyBind.isPressed()) {
+    ChatLib.chat("Key is pressed!");
+}
+```
+
+This first example would spam your chat if it was in an Tick trigger or something of the like, as it will always be true
+if you are holding down the key.
+
+Now, in the second example, we would only get the chat message once every time we press and hold the key. It only
+returns true one time per key press. If you let go and press again, it will return true once more.
