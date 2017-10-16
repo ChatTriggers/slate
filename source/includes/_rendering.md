@@ -18,7 +18,7 @@ function exampleImportRenderOverlay() {
 
 Rendering has to be done every frame of the game, otherwise it will only be on the screen for one frame.
 The RenderOverlay Trigger is called every frame of the game, so it is required for rendering. All of the actual
-rendering code will go inside this function, although it could be seperated into seperate ones.
+rendering code will go inside this function, although it could be separated into separate ones.
 
 ## Setting priority
 
@@ -174,8 +174,7 @@ function exampleImportRenderOverlay() {
   var white = RenderLib.WHITE;
   
   var textToRender = "Rainbows!";
-  RenderLib.drawString(textToRender, (renderWidth / 2) - (RenderLib.getStringWidth(textToRender) / 2),
-                        100, white);
+  RenderLib.drawString(textToRender, (renderWidth / 2) - (RenderLib.getStringWidth(textToRender) / 2), 100, white);
   
   var rectWidth = 50;
   RenderLib.drawRectangle(white, (renderWidth / 2) - (rectWidth / 2), 200, rectWidth, 50);
@@ -188,3 +187,15 @@ We start off by getting the height of the current window, with the call to `Rend
 Then, for eachpart we render, we get half the width of the window, and then subtract half the width of our rendered object.
 For a string this is done with `(renderWidth / 2) - (RenderLib.getStringWidth(textToRender) / 2)`. For a fixed width object,
 you can replace `RenderLib.getStringWidth(textToRender)` with the width of the object.
+
+### Step triggers
+
+> This example shows how to create a step trigger
+
+```javascript
+TriggerRegister.registerStep("exampleImportStep");
+
+function exampleImportStep() {
+  
+}
+```

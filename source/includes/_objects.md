@@ -13,6 +13,7 @@ Object | Description
 [Gui](#guis) | Makes an openable gui in Minecraft
 [KeyBind](#keybinds) | Used for detecting a key's state
 [XMLHttpRequest](#xmlhttprequests) | Used for making an HTTP request
+Commands | Create an in-game command, seperate from `/ct`
 Thread | This is a pseudo object, used to do tasks that take a long time
 
 # Books
