@@ -490,7 +490,7 @@ This creates the request object from which will will make the HTTP connection.
 ```javascript
 var request = new XMLHttpRequest();
 
-request.open("GET", "httpbin.com/get", true);
+request.open("GET", "http://bin.com/get", true);
 ```
 
 This first example opens the GET request to a url (this is just a simple testing website) with the `.open(method, url, async)`
@@ -503,7 +503,7 @@ method. The last flag is whether or not we want the request to be done asynchron
 ```javascript
 var request = new XMLHttpRequest();
 
-request.open("POST", "httpbin.com/post", true);
+request.open("POST", "http://bin.com/post", true);
 ```
 
 The second example showcases how to open a POST request. All arguments are the same, `.open(method, url, async)`.
@@ -517,7 +517,7 @@ The second example showcases how to open a POST request. All arguments are the s
 ```javascript
 var request = new XMLHttpRequest();
 
-request.open("GET", "httpbin.com/get", true);
+request.open("GET", "http://bin.com/get", true);
 request.setCallbackMethod("requestCompleted");
 
 
@@ -537,7 +537,7 @@ object, because it is what you get the response data from.
 ```javascript
 var request = new XMLHttpRequest();
 
-request.open("GET", "httpbin.com/get?foo=bar", true);
+request.open("GET", "http://bin.com/get?foo=bar", true);
 request.setCallbackMethod("requestCompleted");
 request.send();
 
@@ -555,7 +555,7 @@ console when completed.
 ```javascript
 var request = new XMLHttpRequest();
 
-request.open("POST", "httpbin.com/post", true);
+request.open("POST", "http://bin.com/post", true);
 request.setCallbackMethod("requestCompleted");
 request.send("foo", "bar");
 
@@ -575,7 +575,7 @@ strings as you pass in, and every other is the key, and the one following be the
 ```javascript
 var request = new XMLHttpRequest();
 
-request.open("GET", "httpbin.com/get", true);
+request.open("GET", "http://bin.com/get", true);
 request.setCallbackMethod("requestCompleted");
 request.send();
 
@@ -597,7 +597,7 @@ for the request, i.e. `200` for OK, `404` for not found, etc.
 ```javascript
 var request = new XMLHttpRequest();
 
-request.open("GET", "httpbin.com/get", true);
+request.open("GET", "http://bin.com/get", true);
 request.setCallbackMethod("requestCompleted");
 request.extras.put("myMessage", "seekrits");
 request.send();
@@ -623,7 +623,7 @@ global variables.
 ```javascript
 var request = new XMLHttpRequest();
 
-request.open("GET", "httpbin.com/get", true);
+request.open("GET", "http://bin.com/get", true);
 request.setCallbackMethod("requestCompleted");
 request.addRequestHeader("Max-Forwards", "5");
 request.send();
