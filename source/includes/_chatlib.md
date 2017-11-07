@@ -66,7 +66,9 @@ ChatLib.clearChat(5050);
 > This is how you send a message object with an id, then delete it
 
 ```javascript
-ChatLib.chat(new Message("This will be deleted!"), 5050);
+var myMessage = new Message("This will be deleted!");
+myMessage.chatLineId = 5050;
+ChatLib.chat(myMessage);
 
 ChatLib.clearChat(5050);
 ```
