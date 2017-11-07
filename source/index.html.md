@@ -8,11 +8,12 @@ toc_footers:
   - <a href='http://chattriggers.com'>ChatTriggers Website</a>
   - <a href='https://discordapp.com/invite/0fNjZyopOvBHZyG8'>ChatTriggers Discord</a>
   - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
-  
+
 includes:
 - chatlib
 - rendering
 - objects
+- minecraftvars
 - triggers
 
 search: true

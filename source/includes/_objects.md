@@ -12,8 +12,9 @@ Object | Description
 [Display](#displays) | Renders text on to the game screen
 [Gui](#guis) | Makes an openable gui in Minecraft
 [KeyBind](#keybinds) | Used for detecting a key's state
+[LookingAt](#lookingat) | Contains information about what the player is looking at
+[Inventory](#inventory) | Contains information about the player's inventory
 [XMLHttpRequest](#xmlhttprequests) | Used for making an HTTP request
-Commands | Create an in-game command, seperate from `/ct`
 Thread | This is a pseudo object, used to do tasks that take a long time
 
 # Books
@@ -325,6 +326,148 @@ if you are holding down the key.
 
 Now, in the second example, we would only get the chat message once every time we press and hold the key. It only
 returns true one time per key press. If you let go and press again, it will return true once more.
+
+# LookingAt
+
+The LookingAt object contains many methods used for retrieving information about what the player is looking at.
+
+## Types
+
+> You can determine the LookingAt type by calling getType()
+
+```javascript
+if (LookingAt.getType() === "entity") {
+  // The player is looking at an entity
+} else if (LookingAt.getType() === "block") {
+  // The player is looking at a block
+} else {
+  // The player isn't looking at anything
+}
+```
+
+There are two types of things that the player can be looking at: entities and blocks. There are some methods that
+apply to both of these types, but most methods apply to either one or the other. If a method applies to only one
+type, it will have that type in the name (eg: `LookingAt.getEntityDisplayName()`).
+
+<aside class="notice">If the player isn't looking at anything (in other words, looking at air), these methods will
+return null. Additionally, calling a method that doesn't apply (ex: calling `getBlockid()` when the user is looking
+at an entity) will also return null.</aside>
+
+## Methods
+
+Below is a list of all of the methods available _to both types_ in the `LookingAt` object:
+
+Method Name | Description | Example return value
+------------|-------------|---------------------
+getType() | The type of thing the player is looking at | "block" or "entity"
+getName() | The name of the block or entity | "Villager", "Diamond Block"
+getDistanceFromPlayer() | The distance of the block or entity from the player | 3.1882948
+getPosX() | The X coordinate of the block or entity | 30 (block), 30.18472 (entity)
+getPosY() | The Y coordinate of the block or entity | 30 (block), 30.18472 (entity)
+getPosZ() | The Z coordinate of the block or entity | 30 (block), 30.18472 (entity)
+
+<br>
+The block-specific methods:
+
+Method Name | Description | Example return value
+------------|-------------|---------------------
+getBlockMetadata() | The block's metadata | 4
+getBlockUnlocalizedName() | The block's unlocalized name | "sandStone", "blockDiamond"
+getBlockRegistryName() | The block's registry name | "sandstone", "diamond_block"
+getBlockId() | The block's Minecraft id | 24, 57
+getBlockLightLevel() | The light level of the particular block face the player is looking at | 0, 15
+isBlockOnFire() | Whether or not the block is on fire | true, false
+
+<br>
+And finally, the entity-specific methods:
+
+> Examples of how to use getEntityNBTData()
+
+```javascript
+// Returns true if the wolf the user is looking at is angry, otherwise returns false
+function isWolfAngry() {
+  var NBTData = JSON.parse(LookingAt.getEntityNBTData());
+
+  if (LookingAt.getName() === "Wolf") {
+    return NBTData.Angry;
+  } else {
+    return false;
+  }
+}
+```
+
+> Function to display all the JSON keys of an entity's NBT data
+
+```javascript
+function getNBTDataKeys() {
+  var NBTData = JSON.parse(LookingAt.getEntityNBTData());
+  ChatLib.chat(Object.keys(NBTData));
+}
+```
+
+Method Name | Description | Example return value
+------------|-------------|---------------------
+getEntityDisplayName() | The entity's display name | "kerbybit", null (for unnamed entities)
+getEntityMotionX() | The entity's motion in the X direction | 1.2049175
+getEntityMotionY() | The entity's motion in the Y direction | 1.2049175
+getEntityMotionZ() | The entity's motion in the Z direction | 1.2049175
+getEntityTeamName() | The entity's team name | "Blue team"
+getEntityNBTData() | A JSON string of the entity's nbt data | _See example for details_
+isEntityHuman() | Whether or not the entity is human | true, false
+
+# Inventory
+
+The Inventory object contains methods used for getting information about the user's inventory
+
+## InventorySlots
+
+The InventorySlot object is a subset of the Inventory object. An InventorySlot, as the name would suggest, is a
+common slot in the player inventory. For example, `InventorySlot.helmet` refers to the player's helmet.
+
+The valid InventorySlots are as follows:
+`hotbar1, hotbar2, ..., hotbar9; helmet, chestplate, leggings, boots`
+
+## Methods
+
+> As an example, lets create a function to display information about the user's held item
+
+```javascript
+function displayHeldItemInfo() {
+    var item = Inventory.getHeldItem();
+
+    if (!item.isEmpty()) {
+        var durabilityPercentage = Math.ceil(item.getDurability() / item.getMaxDurability() * 100);
+
+        // If NaN, that means it's a block
+        if (isNaN(durabilityPercentage)) durabilityPercentage = "N/A (not a tool!)"
+
+        ChatLib.chat("Item: " + item.getDisplayName());
+        ChatLib.chat("Durability: " + durabilityPercentage + "%");
+        ChatLib.chat("Stack Size: " + item.getStackSize());
+    } else {
+        ChatLib.chat("&4You aren't holding anything!")
+    }
+}
+```
+
+All of the Inventory methods are shows below. Currently there is only one, but there may be more added in the future.
+
+Method Name | Description | Example return value
+------------|-------------|---------------------
+getHeldItem() | The player's currently held item | `InventorySlot.hotbar3`
+
+All of the InventorySlots share the same methods, which are listed below.
+
+Method Name | Description | Example return value
+------------|-------------|---------------------
+isEmpty() | Whether or not that inventory slot is empty | true, false
+isBlock() | Whether or not that inventory slot contains a block, as opposed to, say, a tool | true, false
+getDisplayName() | The item's display name | "Oak Fence", "Flint and Steel"
+getRegistryName() | The item's registry name | "fence", "flint_and_steel"
+getMaxDurability() | The item's max durability | 364, null (for blocks)
+getDurability() | The item's current durability | 115, null (for blocks)
+getStackSize() | The item's stack size | 1, 64
+getMetadata() | The item's metadata | 7
 
 # XMLHttpRequests
 
