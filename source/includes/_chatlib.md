@@ -7,11 +7,12 @@ more.
 ## Sending messages
 
 >This sends a message in chat
+
 ```javascript
 ChatLib.chat("Coming from the code!");
 ```
-
 >This sends a message in chat that doesn't trigger chat listeners
+
 ```javascript
 ChatLib.chat("Coming from the code, but I don't trigger anything!", true);
 ```
