@@ -14,14 +14,15 @@ ChatLib.chat("Coming from the code!");
 >This sends a message in chat that doesn't trigger chat listeners
 
 ```javascript
-ChatLib.chat("Coming from the code, but I don't trigger anything!", false);
+ChatLib.chat("Coming from the code, but I don't trigger anything!", true);
 ```
 
-The first example sends a simple string into the player's chat. However, this will trigger _all_ imports' chat
-triggers with our message. If we send this message in a trigger that listens for the same one, the game will crash.
+The first example sends a simple string into the player's chat. However, this will not trigger other imports' 
+chat triggers. 
 
-That's where the second example comes in. The false flag passed in at the end indicates that we don't want this to
-occur, and no imports will receive this message.
+That's where the second example comes in. The `true` parameter passed in at the end indicates that we want this 
+message to trigger other chat triggers. Careful though - if we send this message in a trigger that listens for
+the same one, the game will crash.
 
 ## Message objects
 
@@ -38,11 +39,12 @@ ChatLib.chat(hoverableMessage);
 
 Here we are creating new Message objects. These are required to send messages that have clickable or hoverable text.
 The constructor of a Message can take as many strings, `ChatLib.clickable(text, action, value, hoverText)`, or
-`ChatLib.hover(text, hoverText)` as you want. All of these can use color codes.
+`ChatLib.hover(text, hoverText)` as you want. All of these can use formatting codes using the amperstand sign (eg: `&b` 
+for aqua).
 
 ### Clickables
 
-The first message we create is a message that has clickable, and non-clickable, text. The first part is regular text,
+The first message we create is a message that has clickable and non-clickable text. The first part is regular text,
 followed by a clickable part that run the `/help` command when clicked, and shows the hoverText when the mouse is
 hovering over that part of the message. Then, at the end, it has a non-clickable exclamation point.
 
@@ -51,7 +53,7 @@ hovering over that part of the message. Then, at the end, it has a non-clickable
 The second message created and chatted is a message that only contains a hoverable message. Nothing will be activated
 or ran when the message is clicked.
 
-<aside class="notice">You can also append the <code>false</code> flag when chatting messages to make them non-recursive.</aside>
+<aside class="notice">You can also append the <code>true</code> flag when chatting messages to make them recursive.</aside>
 
 ## Message IDs
 

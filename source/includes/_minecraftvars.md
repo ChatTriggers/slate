@@ -62,7 +62,6 @@ inChat | Whether or not the player has the chat window open | A boolean
 inTab | Whether or not the player has the tab window open | A boolean
 isSprinting | Whether or not the player is springing | A boolean
 isSneaking | Whether or not the player is sneaking | A boolean
-ping* | The ping to the current server | An integer
 posX | The player's X position | A float
 posY | The player's Y position | A float
 posZ | The player's Z position | A float
@@ -81,6 +80,12 @@ upArrow | Whether or not the up arrow key is pressed | A boolean
 downArrow | Whether or not the down arrow key is pressed | A boolean
 tabbedIn | Whether or not the Minecraft window is active | A boolean
 potEffects | A list of the currently active potion effects | A string array
+mcVersion | The version of Minecraft currently running | A string
+maxMem | The player's maximum memory amount | An integer
+totalMem | The player's currently used memory amount | An integer
+freeMem | The player's free memory amount | An integer
+memUsage | The player's memory usage percent | An integer
+ping* | The ping to the current server | An integer
 serverIP* | The IP of the server the player is on | A string
 serverMOTD* | The MOTD of the server the player is on | A string
 server* | The name of the server the player is on | A string

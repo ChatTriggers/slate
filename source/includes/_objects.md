@@ -422,10 +422,8 @@ The Inventory object contains methods used for getting information about the use
 ## InventorySlots
 
 The InventorySlot object is a subset of the Inventory object. An InventorySlot, as the name would suggest, is a
-common slot in the player inventory. For example, `InventorySlot.helmet` refers to the player's helmet.
-
-The valid InventorySlots are as follows:
-`hotbar1, hotbar2, ..., hotbar9; helmet, chestplate, leggings, boots`
+common slot in the player inventory. For example, `Inventory.getHelmet()` would return an `InventorySlot` object
+corresponding to the player's helmet slot.
 
 ## Methods
 
@@ -450,11 +448,16 @@ function displayHeldItemInfo() {
 }
 ```
 
-All of the Inventory methods are shows below. Currently there is only one, but there may be more added in the future.
+All of the Inventory methods are shows below. 
 
-Method Name | Description | Example return value
-------------|-------------|---------------------
-getHeldItem() | The player's currently held item | `InventorySlot.hotbar3`
+Method Name | Description 
+------------|-------------
+getHeldItem() | Gets the slot of the player's held item
+getItemInSlot(int slot) | Gets the slot of the specified slot
+getHelmet() | Gets the player's helmet
+getChestplate() | Gets the player's chestplate
+getLeggings() | Gets the player's leggings
+getBoots() | Gets the player's boots
 
 All of the InventorySlots share the same methods, which are listed below.
 
