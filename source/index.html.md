@@ -35,15 +35,15 @@ which means you can use all extensions it includes, found [here](https://wiki.op
 
 To setup a ct.js coding environment, all you have to do is put the ct.js jar into your `.minecraft/mods` folder, and launch 
 Minecraft. In your mods folder, you will get a folder structure automatically created. The structure should be<br/>
- `.minecraft/mods/ChatTriggers/Imports` and `.minecraft/mods/ChatTriggers/libs`.
+ `.minecraft/mods/ChatTriggers/modules` and `.minecraft/mods/ChatTriggers/libs`.
  
-# Creating an Import
+# Creating a Module
 
-To create an import, create a folder in your `.minecraft/mods/ChatTriggers/Imports` folder, and have it's name be the name
-of your import. Our import will be called Example. Our folder structure now looks like<br/> `.minecraft/mods/ChatTriggers/Imports/Example/`.
+To create a module, create a folder in your `.minecraft/mods/ChatTriggers/modules` folder, and have it's name be the name
+of your module. Our module will be called Example. Our folder structure now looks like<br/> `.minecraft/mods/ChatTriggers/modules/Example/`.
 
 We now need to create our scripts, so create a file in the folder named whatever you would like, the name is only for your
-own management of the import. We'll call our main file `main`.
+own management of the module. We'll call our main file `main`.
 
 <aside class="notice">
 Make the extension of the file be the normal extension for your specified language, i.e. main.js for JavaScript.
@@ -59,7 +59,7 @@ Make the extension of the file be the normal extension for your specified langua
 TriggerRegister.registerWorldLoad("exampleImportWorldLoad");
 ```
 
-The base of ct.js imports are "Triggers". These are events that get fired when a certain action happens in game,
+The base of ct.js modules are "Triggers". These are events that get fired when a certain action happens in game,
 like a sound is played, or chat message is received. A full list of these is at the [bottom of the page](#triggers).
  
 So, we want to start of by listening to one of these, let's start with one of the simplest, WorldLoad.
