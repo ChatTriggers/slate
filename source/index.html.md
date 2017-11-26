@@ -40,7 +40,7 @@ Minecraft. In your mods folder, you will get a folder structure automatically cr
 # Creating a Module
 
 To create a module, create a folder in your `.minecraft/mods/ChatTriggers/modules` folder, and have it's name be the name
-of your module. Our import will be called Example. Our folder structure now looks like<br/> `.minecraft/mods/ChatTriggers/modules/Example/`.
+of your module. Our module will be called Example. Our folder structure now looks like<br/> `.minecraft/mods/ChatTriggers/modules/Example/`.
 
 We now need to create our scripts, so create a file in the folder named whatever you would like, the name is only for your
 own management of the module. We'll call our main file `main`.
