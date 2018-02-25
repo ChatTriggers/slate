@@ -40,7 +40,7 @@ Minecraft. In your mods folder, you will get a folder structure automatically cr
 # Creating a module
 
 To create an import, create a folder in your `.minecraft/config/ChatTriggers/modules` folder, and have it's name be the name
-of your import. Our import will be called Example. Our folder structure now looks like<br/> `.minecraft/config/ChatTriggers/modules`.
+of your import. Our import will be called Example. Our folder structure now looks like<br/> `.minecraft/config/ChatTriggers/modules/Example`.
 
 We now need to create our scripts, so create a file in the folder named whatever you would like, the name is only for your
 own management of the import. We'll call our main file `main`.
@@ -76,7 +76,8 @@ to be activated when the world is loaded. However, there is no function with tha
 ```javascript
 TriggerRegister.registerWorldLoad("exampleImportWorldLoad");
 
-function exampleWorldLoad() {
+//The argument passed into the register function is the name of the function you want to trigger.
+function exampleImportWorldLoad() {
   
 }
 ```
@@ -110,7 +111,7 @@ variable ChatLib. A list of the methods it provides can be found in the document
 ```javascript
 TriggerRegister.registerChat("exampleChat").setChatCriteria("<${*}> ${message}");
 
-function exampleChat(message) {
+function exampleChat(message, event) {
   
 }
 ```
@@ -133,7 +134,7 @@ A list of these are found in the documentation for each specific trigger type, y
 TriggerRegister.registerChat("exampleImportChat").setChatCriteria("<${*}> ${message}");
 
 function exampleImportChat(message, event) {
-  cancel(event);
+  cancel(event); // OR event.setCanceled(true);
   
   ChatLib.chat("I did cancel this: " + message + "!");
 }
