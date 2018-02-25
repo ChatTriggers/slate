@@ -16,6 +16,8 @@ Object | Description
 [Inventory](#inventory) | Contains information about the player's inventory
 [XMLHttpRequest](#xmlhttprequests) | Used for making an HTTP request
 Thread | This is a pseudo object, used to do tasks that take a long time
+CPS | Contains information about the player's clicks per second
+ParticleEffect | Allows creation of custom particle effects to be displayed client side
 
 # Books
 
