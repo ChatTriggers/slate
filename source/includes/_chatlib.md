@@ -38,12 +38,12 @@ ChatLib.chat(hoverableMessage);
 
 Here we are creating new Message objects. These are required to send messages that have clickable or hoverable text.
 The constructor of a Message can take as many strings, `ChatLib.clickable(text, action, value, hoverText)`, or
-`ChatLib.hover(text, hoverText)` as you want. All of these can use color codes.
+`ChatLib.hover(text, hoverText)` as you want, simply separate them with commas as shown in the first example. All of these can use color codes.
 
 ### Clickables
 
 The first message we create is a message that has clickable, and non-clickable, text. The first part is regular text,
-followed by a clickable part that run the `/help` command when clicked, and shows the hoverText when the mouse is
+followed by a clickable part that runs the `/help` command when clicked, and shows the hoverText when the mouse is
 hovering over that part of the message. Then, at the end, it has a non-clickable exclamation point.
 
 ### Hovers

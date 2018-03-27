@@ -11,6 +11,21 @@ Trigger | Description | Cancelable
 Tick | Fired every time the Minecraft game loop is ran | no
 WorldLoad | Fired when the game loads a world | no
 WorldUnload | Fired when the game unloads a world | no
+Clicked | Fires when a certain position is clicked | no
+Command | Fires when a specified command is run by the player | no
+Dragged | Fires as a specified mouse button is being held down | no 
+GuiOpened | Fires when a gui is opened | yes
+RenderAir | Fires when the player's air level is rendered (i.e. while the player is underwater) | yes
+RenderBossHealth | Fires when a boss health bar is being rendered | yes
+RenderCrosshair | Fires as the crosshair is drawn | yes
+RenderDebug | Fires when the debug screen (F3) is being drawn | yes
+RenderExperience | Fires when the player's experience bar is being drawn | yes
+RenderFood | Fires when the player's food (hunger) is being drawn | yes
+RenderHealth | Fires when the player's health is being drawn | yes
+RenderHotbar | Fires when the player's hotbar is being drawn | yes
+RenderMountHealth | Fires when the mount's health (horse or pig) is being drawn | yes
+RenderPlayerList | Fires when the player list (tab list) is being drawn | yes
+SoundPlay | Fires when a specified sound is played | yes
 
 ## Advanced registering
 
