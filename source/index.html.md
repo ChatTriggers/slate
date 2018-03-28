@@ -13,7 +13,6 @@ includes:
 - chatlib
 - rendering
 - objects
-- minecraftvars
 - triggers
 
 search: true
@@ -30,6 +29,8 @@ JavaScript scripts are executed with Java's [Nashorn](http://openjdk.java.net/pr
 which means you can use all extensions it includes, found [here](https://wiki.openjdk.java.net/display/Nashorn/Nashorn+extensions).
 
 <aside class="success">JavaScript <em>can</em> access Minecraft classes.</aside>
+
+<aside class="warning">Some of this documentation may be out of date or incomplete.</aside>
 
 # Setup
 
@@ -74,7 +75,7 @@ to be activated when the world is loaded. However, there is no function with tha
 >We create the function to be called by the trigger like so:
 
 ```javascript
-TriggerRegister.registerWorldLoad("exampleImportWorldLoad");
+register("worldLoad", "exampleImportWorldLoad");
 
 //The argument passed into the register function is the name of the function you want to trigger.
 function exampleImportWorldLoad() {
@@ -92,7 +93,7 @@ and many other things.
 >For code to be activated by a trigger, simply put it in your function called by that registered trigger
 
 ```javascript
-TriggerRegister.registerWorldLoad("exampleWorldLoad");
+register("worldLoad", "exampleWorldLoad");
 
 function exampleWorldLoad() {
   ChatLib.chat("&6Gold Text says that the world has just loaded!");
@@ -109,7 +110,7 @@ variable ChatLib. A list of the methods it provides can be found in the document
 >A chat trigger that gets fired on the chat message <code>&lt;FalseHonesty&gt; Hello World!</code>
 
 ```javascript
-TriggerRegister.registerChat("exampleChat").setChatCriteria("<${*}> ${message}");
+register("chat", "exampleChat").setChatCriteria("<${*}> ${message}");
 
 function exampleChat(message, event) {
   
@@ -131,7 +132,7 @@ A list of these are found in the documentation for each specific trigger type, y
 >To cancel a cancelable event, do this:
 
 ```javascript
-TriggerRegister.registerChat("exampleImportChat").setChatCriteria("<${*}> ${message}");
+register("chat", "exampleImportChat").setChatCriteria("<${*}> ${message}");
 
 function exampleImportChat(message, event) {
   cancel(event); // OR event.setCanceled(true);
@@ -143,7 +144,7 @@ function exampleImportChat(message, event) {
 >The event parameter is optional, so this works just the same if you don't need to use the event
 
 ```javascript
-TriggerRegister.registerChat("exampleImportChat").setChatCriteria("<${*}> ${message}");
+register("chat", "exampleImportChat").setChatCriteria("<${*}> ${message}");
 
 function exampleImportChat(message) {
   ChatLib.chat("I didn't cancel this: " + message + "!");
@@ -151,4 +152,4 @@ function exampleImportChat(message) {
 ```
 
 Some events are cancelable, like chat events. If it is cancelable, the last parameter passed into the function will always
-be the event
+be the event.
