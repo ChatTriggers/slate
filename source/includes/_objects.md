@@ -131,18 +131,18 @@ current coordinates.
 > This is how you set the alignment of a display
 
 ```javascript
-display.setAlign(DisplayHandler.Align.LEFT);
+display.setAlign("left");
 ```
 
-This aligns your display on the left side of the screen. Other options are `CENTER` and `RIGHT`.
+This aligns your display on the left side of the screen. Other options are `"center"` and `"right"`.
 
 > This is how you set the order of the lines
 
 ```javascript
-display.setOrder(DisplayHandler.Order.DOWN);
+display.setOrder("down");
 ```
 
-This renders the lines from 0 going downwards, usually what you'd want. Other options are `UP`.
+This renders the lines from 0 going downwards, usually what you'd want. Other options are `"up"`.
 
 > This is how you set the exact position of the display
 
