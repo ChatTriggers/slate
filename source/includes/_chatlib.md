@@ -11,34 +11,30 @@ more.
 ```javascript
 ChatLib.chat("Coming from the code!");
 ```
->This sends a message in chat that doesn't trigger chat listeners
 
-```javascript
-ChatLib.chat("Coming from the code, but I don't trigger anything!", false);
-```
-
-The first example sends a simple string into the player's chat. However, this will trigger _all_ imports' chat
-triggers with our message. If we send this message in a trigger that listens for the same one, the game will crash.
-
-That's where the second example comes in. The false flag passed in at the end indicates that we don't want this to
-occur, and no imports will receive this message.
+This first example shows how to display a basic chat message. This message differs from normal messages in that it does NOT trigger chat triggers.
 
 ## Message objects
 
 >This example sends messages that have clickable and hoverable text
 
 ```javascript
-var clickableMessage = new Message("This is not clickable. ", ChatLib.clickable("This is clickable", "run_command", "/help", "This is shown when hovering over the message!"), "!");
+var clickableMessage = new Message(
+  "This is not clickable. ",
+   new TextComponent("This is clickable").setClick("run_command", "/help"),
+    "!"
+);
 
-var hoverableMessage = new Message(ChatLib.hover("This message does nothing when clicked.", "But it shows this text when hovered over!"));
+var hoverableMessage = new TextComponent("This message does nothing when clicked.").setHoverValue("But it shows this text when hovered over!");
 
 ChatLib.chat(clickableMessage);
 ChatLib.chat(hoverableMessage);
 ```
 
 Here we are creating new Message objects. These are required to send messages that have clickable or hoverable text.
-The constructor of a Message can take as many strings, `ChatLib.clickable(text, action, value, hoverText)`, or
-`ChatLib.hover(text, hoverText)` as you want, simply separate them with commas as shown in the first example. All of these can use color codes.
+The constructor of a Message can take as many `String`s or `TextComponent`s as you want, simply separate them with commas as shown in the first example. 
+
+TextComponents are nice little wrappers that allow you to customize a small chunk of a message. You can change what happens when you click or hover on the message. You can also directly send a TextComponent as seen with the hoverable message. All of these can use color codes.
 
 ### Clickables
 
@@ -51,24 +47,14 @@ hovering over that part of the message. Then, at the end, it has a non-clickable
 The second message created and chatted is a message that only contains a hoverable message. Nothing will be activated
 or ran when the message is clicked.
 
-<aside class="notice">You can also append the <code>false</code> flag when chatting messages to make them non-recursive.</aside>
+<aside class="notice">You can also use <code>Message#setRecursive(boolean)</code> to make Messages non-recursive.</aside>
 
 ## Message IDs
 
 > This is how you send a chat message with an ID, and then delete it
 
 ```javascript
-ChatLib.chat("This will be deleted!", 5050);
-
-ChatLib.clearChat(5050);
-```
-
-> This is how you send a message object with an id, then delete it
-
-```javascript
-var myMessage = new Message("This will be deleted!");
-myMessage.chatLineId = 5050;
-ChatLib.chat(myMessage);
+new Message("This will be deleted!").setChatLineId(5050).chat();
 
 ChatLib.clearChat(5050);
 ```
@@ -76,8 +62,10 @@ ChatLib.clearChat(5050);
 Every message can have an ID specified, which can then be deleted from chat. This is best suited for auto-replacing menus,
 chat messages you only want to display in chat for a certain amount of time, etc.
 
+This example also showcases an alternative method of chatting a Message, as there is a simple helper method, `Message#chat()`
+
 Only one chat message can have the same ID, as it will replace any messages with the same ID before sending.
-The ID is passed as the last argument, and you pass the same ID to `ChatLib.clearChat(id)` to delete it.
+The ID is specified in the message object, and you pass the same ID to `ChatLib.clearChat(id)` to delete it.
 
 <aside class="notice">Doing <code>ChatLib.clearChat()</code> will delete all messages in chat, no matter the ID</aside>
 
@@ -100,7 +88,7 @@ ChatLib.chat(ChatLib.getChatBreak("-"));
 To center a message in chat (padded by spaces), use the `ChatLib.getCenteredText(text)` method, and then chat what's
 returned.
 
-<aside class="warning">This is a <i>slightly</i> intensive operation, so if you can store this in a variable and re-use it, that's
+<aside class="warning">This is a <i>marginally</i> intensive operation, so if you can store this in a variable and re-use it, that's
 preferable.</aside>
 
 ### Line breaks
@@ -123,7 +111,7 @@ ChatLib.editChat("Hey there! This will change...", "And... changed!")
 ```
 
 `ChatLib.editChat(message, replacer)` is a simple method that takes in an unformatted message and replaces all instances
-of it with the replacer. This is a _slightly_ laggy operation if done extremely rapidly, like 60 times per second.
+of it with the replacer. This is a _slightly_ laggy operation if done extremely rapidly (i.e. around 60 times per second).
 
 ## Chat message from event
 
