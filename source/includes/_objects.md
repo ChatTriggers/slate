@@ -3,7 +3,7 @@
 ct.js provides several objects to expand the functionality of your imports without you needing to delve into base
 Minecraft code. A list is found below.
 
-<aside class="warning">It is bad practice to create new object every time you use it, they're heavy object.
+<aside class="warning">It is bad practice to create new object every time you use it, they're heavy objects.
 Create one in the global scope, and refer back to it.</aside>
 
 Object | Description
@@ -21,7 +21,7 @@ ParticleEffect | Allows creation of custom particle effects to be displayed clie
 
 # Books
 
-Books objects are used for displaying base Minecraft book GUI's with customizable text.
+Book objects are used for displaying base Minecraft book GUIs with customizable text.
 
 ## Creation
 
