@@ -12,7 +12,7 @@ more.
 ChatLib.chat("Coming from the code!");
 ```
 
-This first example shows how to display a basic chat message. This message differs from normal messages in that it does NOT trigger chat triggers.
+This first example shows how to display a basic chat message. This message differs from normal messages in that it does NOT trigger chat triggers. It is also not visible to other players.
 
 ## Message objects
 
@@ -34,7 +34,7 @@ ChatLib.chat(hoverableMessage);
 Here we are creating new Message objects. These are required to send messages that have clickable or hoverable text.
 The constructor of a Message can take as many `String`s or `TextComponent`s as you want, simply separate them with commas as shown in the first example. 
 
-TextComponents are nice little wrappers that allow you to customize a small chunk of a message. You can change what happens when you click or hover on the message. You can also directly send a TextComponent as seen with the hoverable message. All of these can use color codes.
+TextComponents are nice little wrappers that allow you to customize a small chunk of a message. You can change what happens when you click or hover on the message. You can also directly send a TextComponent as seen with the hoverable message. All of these can use formatting codes with the `&` symbol.
 
 ### Clickables
 
@@ -69,6 +69,18 @@ The ID is specified in the message object, and you pass the same ID to `ChatLib.
 
 <aside class="notice">Doing <code>ChatLib.clearChat()</code> will delete all messages in chat, no matter the ID</aside>
 
+## Editing chat
+
+> This is how you edit a chat message after it has been sent to chat
+
+```javascript
+ChatLib.chat("Hey there! This will change...");
+
+ChatLib.editChat("Hey there! This will change...", "And... changed!")
+```
+
+`ChatLib.editChat(message, replacer)` is a simple method that takes in an unformatted message and replaces all instances of it with the replacer. This is a _slightly_ laggy operation if done extremely rapidly (i.e. around 60 times per second). The `editChat` method can also take the Message ID as the first argument.
+
 ## Specially formatted messages
 
 > This is how you center a chat message
@@ -100,19 +112,6 @@ example.
 <aside class="success">Any length string can be used as the seperator, such as "seperate". However, because this is a long
 string, there will be a gap at the end where another use of the string will not fit</aside>
 
-## Editing chat
-
-> This is how you edit a chat message after it has been sent to chat
-
-```javascript
-ChatLib.chat("Hey there! This will change...");
-
-ChatLib.editChat("Hey there! This will change...", "And... changed!")
-```
-
-`ChatLib.editChat(message, replacer)` is a simple method that takes in an unformatted message and replaces all instances
-of it with the replacer. This is a _slightly_ laggy operation if done extremely rapidly (i.e. around 60 times per second).
-
 ## Chat message from event
 
 > This is how you get the unformatted message from a chat event
@@ -131,12 +130,12 @@ function onChatReceived(event) {
 }
 ```
 
-### Formatted chat
+### Unformatted chat
 
 To get the unformatted chat from a chat event passed into a function by a Chat Trigger, pass it to the
 `ChatLib.getChatMessage(event)` method, which returns an unformatted string.
 
-### Unformatted chat
+### Formatted chat
 
 However, if you want the formatted version of the chat message, append the `true` flag to the
 `ChatLib.getChatMessage(event, formatted`) method.

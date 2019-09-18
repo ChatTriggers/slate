@@ -4,28 +4,52 @@ This is a list of all the Triggers currently available:
 
 Trigger | Description | Cancelable
 ------- | ----------- | ----------
+ActionBar | Fires when a message is displayed in the action bar | yes
+BlockBreak | Fires when a block is broken | yes
 [Chat](#chat-triggers) | Fires when a chat event is received | yes
-[RenderOverlay](#rendering) | Fires when the game's overlay is rendered, tied to the game's FPS | no
-[SoundPlay](#sound-play-triggers) | Fired when a sound is played | no
-[Step](#step-triggers) | Fired a certain amount of times per second, no matter the FPS | no
-Tick | Fired every time the Minecraft game loop is ran | no
-WorldLoad | Fired when the game loads a world | no
-WorldUnload | Fired when the game unloads a world | no
+ChatComponentClicked | Fires when the user clicks a chat component | yes
+ChatComponentHover | Fires when the user hoveres over a chat component | yes
 Clicked | Fires when a certain position is clicked | no
 Command | Fires when a specified command is run by the player | no
 Dragged | Fires as a specified mouse button is being held down | no 
+DrawBlockHighlight | Fires when an outline is drawn over the block being moused over | yes
+DropItem | Fires when a player drops an item | no
+GameLoad | Fires after a ct (re)load or when a module is deleted | no
+GameUnload | Fires before ct (re)loads or a module is deleted | no
+GuiKey | Fires when a key is pressed while a gui is open | yes
+GuiMouseClick | Fires when the mouse is clicked while a gui is open | yes
+GuiMouseDrag | Fires when the mouse is dragged across a gui screen | yes
+GuiMouseRelease | Fires when a mouse button is released while a gui is open | yes
 GuiOpened | Fires when a gui is opened | yes
+GuiRender | Fires when a gui is rendered | no
+ItemTooltip | Fires when a tooltip is shown to the user | no
+MessageSent | Fires before the player sends a chat message | yes
+NoteBlockPlay | Fires when a noteblock is played | yes
+NoteBlockChange | Fires when a player changes the pitch of a noteblock | yes
+PacketSent | Fires when a packet is sent from the client to the server | yes
+PickupItem | Fires when the player picks up an item | yes
+PlayerInteract | Fires when the player left or right clicks | yes
+PlayerJoined | Fires when a player joined the current world | no
+PlayerLeft | Fires when a player leaves the current world | no
 RenderAir | Fires when the player's air level is rendered (i.e. while the player is underwater) | yes
 RenderBossHealth | Fires when a boss health bar is being rendered | yes
 RenderCrosshair | Fires as the crosshair is drawn | yes
 RenderDebug | Fires when the debug screen (F3) is being drawn | yes
+RenderEntity | Fires when an entity is rendered | yes
 RenderExperience | Fires when the player's experience bar is being drawn | yes
 RenderFood | Fires when the player's food (hunger) is being drawn | yes
 RenderHealth | Fires when the player's health is being drawn | yes
 RenderHotbar | Fires when the player's hotbar is being drawn | yes
 RenderMountHealth | Fires when the mount's health (horse or pig) is being drawn | yes
+[RenderOverlay](#rendering) | Fires when the game's overlay is rendered, tied to the game's FPS | no
 RenderPlayerList | Fires when the player list (tab list) is being drawn | yes
-SoundPlay | Fires when a specified sound is played | yes
+RenderWorld | Fires when the world is rendered | no
+ScreenshotTaken | Fires when the user takes a screenshot | yes
+[SoundPlay](#sound-play-triggers) | Fired when a sound is played | yes
+[Step](#step-triggers) | Fired a certain amount of times per second, no matter the FPS | no
+Tick | Fired every time the Minecraft game loop is ran | no
+WorldLoad | Fired when the game loads a world | no
+WorldUnload | Fired when the game unloads a world | no
 
 ## Advanced registering
 

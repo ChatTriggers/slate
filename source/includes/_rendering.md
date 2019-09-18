@@ -1,10 +1,10 @@
 # Rendering
 
-Rendering is where imports can draw most anything on to the game screen. All 2D rendering involves
+Rendering is where modules can draw most anything on to the game screen. All 2D rendering involves
 calling methods in the `Renderer` object. 3D rendering involves calling methods in the
 `Tessellator` object.
 
-<aside class="notice">All 2D rendering coordinates start at the top left of the screen!</aside>
+<aside class="notice">All 2D rendering coordinates start at the top left of the screen. X increases from left to right, and Y increases from top to bottom.</aside>
 
 ## Setting up
 
@@ -18,9 +18,7 @@ function myRenderOverlay() {
 }
 ```
 
-Rendering has to be done every frame of the game, otherwise it will only be on the screen for one frame.
-The RenderOverlay Trigger is called every frame of the game, so it is required for rendering. All of the actual
-rendering code will go inside this function, although it could be separated into separate ones.
+Rendering has to be done every frame of the game, otherwise it will only be on the screen for one frame. There are many different render triggers, and they all start with `Render`. The most common render trigger is RenderOverlay: this trigger fires every frame with no conditions.
 
 ## Setting priority
 
@@ -40,8 +38,7 @@ function myRenderOverlayFirst() {
 ```
 
 Here, were are dealing with the priority of triggers. Priorities are `LOWEST, LOW, NORMAL, HIGH, HIGHEST`.
-Triggers with a priority of HIGHEST are ran first, because they have first say on an event. Triggers with a priority of LOWEST
-then, are ran last. The function lan rast will draw on TOP of anything before it.
+Triggers with a priority of HIGHEST are ran first, because they have first say on an event. Triggers with a priority of LOWEST are ran last. The function lan rast will draw on TOP of anything before it.
 
 <aside class="notice">All trigger types can have a priority set, it's just most commonly used in rendering</aside>
 
@@ -50,7 +47,7 @@ then, are ran last. The function lan rast will draw on TOP of anything before it
 >You can render text onto the screen with this code:
 
 ```javascript
-register("renderOverlay", "myRenderOverlay");
+register("renderOverlay", myRenderOverlay);
 
 function myRenderOverlay() {
   Renderer.drawString("Hello World!", 10, 10);
@@ -69,55 +66,51 @@ at 10, 10 (the top left corner).
 
 ```javascript
 register("renderOverlay", "myRenderOverlay");
-var myTextObject = Renderer.text("Hello World!", 10, 10).setColor(Renderer.RED);
+var myTextObject = Text("Hello World!", 10, 10).setColor(Renderer.RED);
 
 function myRenderOverlay() {
   myTextObject.draw();
 }
 ```
 
-Here, instead of simply making a method call, we are instatiating an object to do our drawing. This allows for
-much greater customization, such as rotation, scaling, and as described below, coloring.
+Here, instead of simply making a method call, we are instatiating an object to do our drawing. This allows for much greater customization, such as rotation, scaling, and as described below, coloring.
 
-The other interesting part to take a look at is the call to `setColor`, which will, as you can guess, set the color of the
-text. For the color, we use a preset color in Renderer. We could have also made a call to 
-`Renderer.color(red, green, blue, alpha)`, and subsequently passed that in to the method.
-In this example, that call would be Renderer.color(255, 255, 255, 255). Values should range from 0-255.
+The other interesting part to take a look at is the call to `setColor`, which will, as you can guess, set the color of the text. For the color, we use a preset color in Renderer. We could have also made a call to `Renderer.color(red, green, blue, alpha)`, and subsequently passed that in to the method. In this example, that call would be `Renderer.color(255, 255, 255, 255)`. Values should range from 0-255.
+
+<aside class="warning">Do not instantiate objects inside of a render trigger. Create them outside of the trigger, and if necessary, make any changes to the object inside of the trigger.</aside>
 
 ## Rendering of shapes
 
 >This example renders a rectangle, circle, and triangle
 
 ```javascript
-register("renderOverlay", "myRenderOverlay");
+register("renderOverlay", myRenderOverlay);
+
+var rectangle = new Rectangle(Renderer.WHITE, 10, 10, 50, 50);
+var circle = new Shape(Renderer.WHITE).setCircle(100, 100, 25, 360);
+var polygon = new Shape(Renderer.WHITE)
+  .addVertex(300, 300)
+  .addVertex(400, 400)
+  .addVertex(200, 400);
 
 function myRenderOverlay() {
   var white = Renderer.WHITE;
   
-  Renderer.drawRectangle(white, 10, 10, 50, 50);
-  Renderer.drawShape(white, 360, 100, 100, 25);
-  Renderer.drawPolygon(white, [300, 300], [400, 400], [200, 400]);
+  rectangle.draw();
+  circle.draw();
+  polygon.draw();
 }
 ```
 
-In our rendering function we are now drawing a bunch of shapes with a bunch of different methods.
-The first line is simply a variable keeping the color white so we don't have to repeat ourselves so much.
+Let's look at more complex rendering using shapes. We can see our first complex piece of rendering code to the right. The first thing to notice is how we define the shapes outside of our render trigger. This way we aren't create three objects 60+ times a second. 
 
-### Rendering rectangles
+### The different shape classes
 
-The first actual rendering line is the call to `Renderer.drawRectangle(color, screenX, screenY, width, height);`.
-In this example, its a simple 50x50 square, starting at (10,10) on the player's screen.
+We create the first shape, the rectangle, with the instantiation of the `Rectangle` class, whose constructor takes the following arguments: color, x, y, width, and height. 
 
-### Rendering perfect shapes
+The next shape is a circle, which we create through the more general `Shape` class, which is just a collection of (x, y) points to connect together. We use the `setCircle` method, which automatically populates the Shape's vertices to give us a perfect circle.
 
-The second line that does rendering calls the `Renderer.drawShape(color, segments, screenX, screenY, radius);` method.
-This one draws a perfect shape with that number of segments. 3 would draw a perfect triangle, 5 a pentagon. This could be 
-used instead of the next line to draw a triangle, or the line before for a square. For this example, it draws a circle.
-
-### Rendering polygons
-
-The last line makes use of the `Renderer.drawPolygon(color, [x, y]...);` method. It can take as many arrays with x,y
-coordinates as you pass it to add more and more points. This example is used to make a triangle.
+Finally, we manually configure the vertices of the last shape ourselves with the `addVertex` method. After we have created all of our shapes outside of the trigger function, we call the `draw` method inside of the trigger function to render them to the screen.
 
 ## Rendering images
 
@@ -125,35 +118,17 @@ coordinates as you pass it to add more and more points. This example is used to 
 
 ```javascript
 register("renderOverlay", "myRenderImageOverlay");
-Renderer.downloadImage("http://ct.kerbybit.com/ct.js/images/logo.png", "ctjs-logo.png");
+var image = new Image('ctjs-logo.png', 'http://ct.kerbybit.com/ct.js/images/logo.png');
 
 function myRenderImageOverlay() {
-    Renderer.drawImage("ctjs-logo.png", 10, 10, 0, 0, 256, 256, .5);
-    Renderer.drawItemIcon(250, 250, "minecraft:apple");
+    image.draw(100, 100);
 }
 ```
 
-As before, we register for a render overlay trigger so we can do our rendering in it. However, this time, we also make
-a call to `Renderer.downloadImage(url, resourceName)` in the initialization of our script. This downloads the image from
-the provided link and makes it available for rendering.
-
-### Rendering custom images
-
-The first thing we do in the render function is call
-`Renderer.drawImage(resourceName, screenX, screenY, textureMapX, textureMapY, textureWidth, textureHeight, scale)`
-to render the image with 1/2 of its normal size.
-
-
-The resource name has to be the same as what you pass in when you download the image. For the most part, textures will
-start at 0,0 and be 256x256 in size.
+As before, we register for a render overlay trigger so we can do our rendering in it. However, this time, we create an `Image` object with the file name and URL. The file will download to the ct.js assets directory, which defaults to `.minecraft/config/ChatTriggers/images`.
 
 <aside class="notice">Images can also be put in /Imports/Example/assets/ for the same result, just make sure resource name is
 the name of the file, and the file has a <code>.png</code> extension.</aside>
-
-### Rendering minecraft images
-
-The last thing we do in the render function is call `Renderer.drawItemIcon(screenX, screenY, itemName)`. Here we pass
-the x and y of where on the screen we want the item image to be rendered, and the name of the item, such as `minecraft:apple`.
 
 ## Advanced rendering
 
@@ -186,35 +161,21 @@ which we then use as the color for the drawString method.
 >This example showcases how to make render positioning dynamic
 
 ```javascript
-register("renderOverlay", "myRenderOverlay");
+register("renderOverlay", myRenderOverlay);
+
+var width = Renderer.screen.getWidth();
+var rectWidth = 50;
+var textStr = "Rainbows!";
+
+var rectangle = new Rectangle(Renderer.WHITE, width / 2 - rectWidth / 2, 200, rectWidth, 50);
+var text = new Text(textStr, width / 2 - Renderer.getStringWidth(textStr) / 2, 100, Renderer.WHITE);
 
 function myRenderOverlay() {
-  var renderWidth = Renderer.getRenderWidth();
-  var white = Renderer.WHITE;
-  
-  var textToRender = "Rainbows!";
-  Renderer.drawString(textToRender, (renderWidth / 2) - (Renderer.getStringWidth(textToRender) / 2), 100, white);
-  
-  var rectWidth = 50;
-  Renderer.drawRectangle(white, (renderWidth / 2) - (rectWidth / 2), 200, rectWidth, 50);
+  text.draw();
+  rectangle.draw();
 }
 ```
 
-Here we are making all of our rendered objects be perfectly aligned horizontally on the screen for all windows sizes.
-We start off by getting the height of the current window, with the call to `Renderer.getRenderWidth()`.
+Here we are making all of our rendered objects be perfectly aligned horizontally on the screen for all windows sizes. We start off by getting the height of the current window, with the call to `Renderer.screen.getWidth()`.
 
-Then, for eachpart we render, we get half the width of the window, and then subtract half the width of our rendered object.
-For a string this is done with `(renderWidth / 2) - (Renderer.getStringWidth(textToRender) / 2)`. For a fixed width object,
-you can replace `Renderer.getStringWidth(textToRender)` with the width of the object.
-
-### Step triggers
-
-> This example shows how to create a step trigger
-
-```javascript
-register("renderStep", "myStep");
-
-function myStep() {
-  
-}
-```
+Then, for each part we render, we get half the width of the window, and then subtract half the width of our rendered object. For a string, this is done with `(renderWidth / 2) - (Renderer.getStringWidth(textToRender) / 2)`. For a fixed width object, you can replace `Renderer.getStringWidth(textToRender)` with the width of the object. Notice how we use the `Text` object and instantiate it outside of the render function. The text object allows you to set additional properties, such as shadow and color. 
