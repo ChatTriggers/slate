@@ -13,54 +13,88 @@ includes:
 - chatlib
 - rendering
 - objects
-- triggers
 
 search: true
 ---
 
 # Introduction
 
-ct.js is a framework for Minecraft Forge that allows for mods to be scripted, in languages such as JavaScript.
-Scripts are able to be hot reloaded, which means you can make changes to your mod without restarting!
+ct.js is a framework for Minecraft Forge that allows for mods to be scripted, in
+languages such as JavaScript. Scripts are able to be hot reloaded, which means
+you can make changes to your mod without restarting!
 
-<aside class="warning">Currently, only JavaScript is supported.</aside>
+<aside class="warning">
+  Currently, only JavaScript is supported.
+</aside>
 
-JavaScript scripts are executed with Java's [Nashorn](http://openjdk.java.net/projects/nashorn/) library,
-which means you can use all extensions it includes, found [here](https://wiki.openjdk.java.net/display/Nashorn/Nashorn+extensions).
+JavaScript scripts are executed with our custom fork of Mozilla's 
+[Rhino](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino)
+library. Our custom fork supports many ES6 and ESNEXT features. For the (almost)
+full feature list,check our 
+[compatibility table](https://chattriggers.github.io/rhino/);
 
-<aside class="success">JavaScript <em>can</em> access Minecraft classes.</aside>
-
-<aside class="warning">Some of this documentation may be out of date or incomplete.</aside>
+<aside class="warning">
+  Some of this documentation may be out of date or incomplete.
+</aside>
 
 # Setup
 
-To setup a ct.js coding environment, all you have to do is put the ct.js jar into your `.minecraft/mods` folder, and launch 
-Minecraft. In your mods folder, you will get a folder structure automatically created. The default file location is<br/>
- `.minecraft/config/ChatTriggers/modules/` but this can be changed in the configuration.
+To setup ct.js, all you have to do is put the ct.js jar into your `mods` folder,
+and launch Minecraft. By default, ct.js modules are stored in 
+`.minecraft/config/ChatTriggers/modules/`, but this can be changed in the 
+configuration. To access the ct.js settings, type `/ct settings` in game. The 
+rest of this tutorial will refer to this directory as the "modules directory",
+and will assume it is in the default location.
  
 # Creating a module
+
+To create a module, create a folder in your modules folder. The folder can have
+whatever name you want, but typically it is just the name of the module. Our
+module will be called ExampleModule. Our folder structure now looks like 
+`.minecraft/config/ChatTriggers/modules/ExampleModule`.
+
+## The metadata file
 
 > An example `metadata.json` file
 
 ```json
 {
-  "name": "Example",
+  "name": "ExampleModule",
   "creator": "YourNameHere",
   "description": "Our first module!"
 }
 ```
 
-To create an import, create a folder in your `.minecraft/config/ChatTriggers/modules` folder, and have it's name be the name
-of your import. Our import will be called Example. Our folder structure now looks like<br/> `.minecraft/config/ChatTriggers/modules/Example`.
 
-If we intend to share our module through the ctjs website, we'll need a `metadata.json` file. This file contains important information about our module. You can see an example of this file to the right. Another important field you may want to include at some point is the `required` key. This key should be an array of module names which your module depends on.
+If we intend to share our module through the 
+[ct.js website](https://chattriggers.com), we'll need a `metadata.json` file.
+This file contains important information about our module. You can see an
+example of this file to the right. The metadata file contains a number of 
+important fields, documented here:
 
-We now need to create our scripts, so create a file in the folder named whatever you would like, the name is only for your
-own management of the import. We'll call our main file `main`.
+- `name`: The name of the module
+- `creator`: The name of the module creator
+- `version`: The version of the module. This should conform to 
+  [SEMVER](https://semver.org/)
+- `entry`: This is the name of a file that should actually be ran. This key is
+  necessary if, for example, your module registers triggers or commands. An 
+  example of when you wouldn't want to use this field is if your module is a 
+  library, meaning that it is only used by other modules
+- `requires`: An array of names of other modules that your module depends on.
+  These modules are guaranteed to be loaded before your module, allowing you to 
+  use them directly.
+- `asmEntry` and `asmExposedFunctions`: These will be discussed later in the ASM
+  section
 
-<aside class="notice">
-Make the extension of the file be the normal extension for your specified language, i.e. <code>main.js</code> for JavaScript.
-</aside>
+## Scripting
+
+We now need to create our script files. Typically, the root file of your module
+is named `index.js`. This is a general web development practice. You can name
+your files whatever your want, however one benefit of having an `index.js` file
+is that if someone tries to import from your module folder directly, instead of
+a specific file in your module, it will be imported from the `index.js` file, if
+one exists. If no `index.js` file exists, other people will have to import
+directly from the files themselves.
 
 # The Basics
 
@@ -85,27 +119,37 @@ register("worldLoad", exampleWorldLoad);
 >You can also register an anonymous function for simplicity:
 
 ```javascript
-register("worldLoad", function() {
+register("worldLoad", () => {
 
 });
 ```
 
-The base of ct.js imports are "Triggers". These are events that get fired when a certain action happens in game, like a sound being played or a chat message being sent. A full list of these is at the [bottom of the page](#triggers).
- 
-Let's start with one of the simplest trigger: WorldLoad. In order to register a trigger, we use the provided `register` function. It takes the trigger name as the first argument (case-insensitive), and the function as the second argument. The second argument can either be the name of a global function, or an anonymous function defined in the `register` call.
+The base of ct.js imports are called "triggers". These are events that get fired
+when a certain action happens in game, like a sound being played or a chat 
+message being sent. Let's start with one of the simplest triggers: WorldLoad. In
+order to register a trigger, we use the provided `register` function. It takes
+the trigger name as the first argument (case-insensitive), and the function to
+run as the second argument. You can see a complete list of these triggers on our 
+[javadocs, under `IRegister`](https://www.chattriggers.com/javadocs/com/chattriggers/ctjs/engine/IRegister.html).
 
-Now any code inside of our `exampleWorldLoad` trigger will be ran whenever a world is loaded. From here, you can do many things, such as interacting with Minecraft methods or getting information from arguments that certain triggers may pass in.
+<aside class="notice">
+  To convert an IRegister name to a trigger name, just remove the "register" from the beginning of the method name.
+</aside>
 
-<aside class="notice">You can register as many triggers as you want, and you can even use the same function in multiple different triggers.</aside>
+Now any code inside of our `exampleWorldLoad` trigger will be ran whenever a world is loaded. From here, you 
+can do many things, such as interacting with Minecraft methods or getting information from arguments that 
+certain triggers may pass in.
 
-<aside class="notice">To find out what arguments a trigger passes to its function, take a look at the javadocs, <a href="https://www.chattriggers.com/javadocs/com/chattriggers/ctjs/engine/IRegister.html">located here</a></aside>
+<aside class="notice">
+  You can register as many triggers as you want, and you can even use the same function in multiple different triggers.
+</aside>
 
 ## Trigger arguments
 
 > Preparing a trigger to intercept messages
 
 ```js
-register('messageSent', function(event, message) {
+register('messageSent', (message, event) => {
   // TODO
 });
 ```
@@ -113,8 +157,8 @@ register('messageSent', function(event, message) {
 > Display "Pong!" in response to a message sent containing "ping"
 
 ```js
-register('messageSent', function(event, message) {
-  if (message.toLowerCase().indexOf('ping') !== -1) {
+register('messageSent', (message, event) => {
+  if (message.toLowerCase().contains('ping')) {
     ChatLib.chat('Pong!');
   }
 });
