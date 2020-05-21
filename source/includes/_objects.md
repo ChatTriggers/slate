@@ -12,9 +12,7 @@ Object | Description
 [Display](#displays) | Renders text on to the game screen
 [Gui](#guis) | Makes an openable gui in Minecraft
 [KeyBind](#keybinds) | Used for detecting a key's state
-[LookingAt](#lookingat) | Contains information about what the player is looking at
 [Inventory](#inventory) | Contains information about the player's inventory
-[XMLHttpRequest](#xmlhttprequests) | Used for making an HTTP request
 Thread | This is a pseudo object, used to do tasks that take a long time
 CPS | Contains information about the player's clicks per second
 ParticleEffect | Allows creation of custom particle effects to be displayed client side
@@ -331,6 +329,8 @@ returns true one time per key press. If you let go and press again, it will retu
 
 # LookingAt
 
+**Note that some of this information may still be relevant, however the LookingAt object has been removed in favor of `Player.lookingAt()`**
+
 The LookingAt object contains many methods used for retrieving information about what the player is looking at.
 
 ## Types
@@ -473,165 +473,4 @@ getMetadata() | The item's metadata | 7
 
 # XMLHttpRequests
 
-XMLHttpRequests are used to send HTTP requests. This can be used for things like making API calls.
-
-## Creation
-
-> This is how you can create the request object
-
-```javascript
-var request = new XMLHttpRequest();
-```
-
-This creates the request object from which will will make the HTTP connection.
-
-## Opening a connection
-
-> This is how you can open a GET request
-
-```javascript
-var request = new XMLHttpRequest();
-
-request.open("GET", "http://httpbin.org/get", true);
-```
-
-This first example opens the GET request to a url (this is just a simple testing website) with the `.open(method, url, async)`
-method. The last flag is whether or not we want the request to be done asynchronously.
-
-<aside class="notice">For GET requests, all params should be done in the URL with <code>?key=value&key2=value2</code>.</aside>
-
-> This is how you can open a POST request
-
-```javascript
-var request = new XMLHttpRequest();
-
-request.open("POST", "http://httpbin.org/post", true);
-```
-
-The second example showcases how to open a POST request. All arguments are the same, `.open(method, url, async)`.
-
-<aside class="notice">For POST requests, all params should be done in the send method shown later.</aside>
-
-## Setting the callback
-
-> This is how you set the callback for the request
-
-```javascript
-var request = new XMLHttpRequest();
-
-request.open("GET", "http://httpbin.org/get", true);
-request.setCallbackMethod("requestCompleted");
-
-
-function requestCompleted(request) {
-
-}
-```
-
-The function we set as the callback method will be called when the request has finished. Currently, it will never be called,
-because we haven't sent the request yet. The callback method should take one parameter, which will be the XHR request
-object, because it is what you get the response data from.
-
-## Sending the request
-
-> This is how you actually send the GET request
-
-```javascript
-var request = new XMLHttpRequest();
-
-request.open("GET", "http://httpbin.org/get?foo=bar", true);
-request.setCallbackMethod("requestCompleted");
-request.send();
-
-
-function requestCompleted(request) {
-  print("Finished GETting!");
-}
-```
-
-This sends the asynchronous GET request with one request data, that being foo=bar. This prints `"Finished!"` to the
-console when completed.
-
-> This is how you actually send the POST request
-
-```javascript
-var request = new XMLHttpRequest();
-
-request.open("POST", "http://httpbin.org/post", true);
-request.setCallbackMethod("requestCompleted");
-request.send("foo", "bar");
-
-
-function requestCompleted(request) {
-  print("Finished POSTing!");
-}
-```
-
-This sends the asynchronous POST request with one bit of post data, again being foo=bar. The send method takes as many
-strings as you pass in, and every other is the key, and the one following be the value.
-
-## Receiving the request
-
-> This is how you can receive the response data
-
-```javascript
-var request = new XMLHttpRequest();
-
-request.open("GET", "http://httpbin.org/get", true);
-request.setCallbackMethod("requestCompleted");
-request.send();
-
-
-function requestCompleted(request) {
-  print(request.statusText);
-  print(request.responseText);
-}
-```
-
-The request object passed into the function is the same XMLHttpRequest you created, opened, and sent. It has three fields,
-`status`, `statusText`, and `responseText` which are set when the request completes. Status is used for the response code
-for the request, i.e. `200` for OK, `404` for not found, etc.
-
-## Extra data
-
-> This is how you can store extra data in your request for use in the callback
-
-```javascript
-var request = new XMLHttpRequest();
-
-request.open("GET", "http://httpbin.org/get", true);
-request.setCallbackMethod("requestCompleted");
-request.extras.put("myMessage", "seekrits");
-request.send();
-
-
-function requestCompleted(request) {
-  print(request.extras.get("myMessage"));
-}
-```
-
-Here we are utilizing the "extras" map that is a part of the XHR object. When we are setting up our request, we put
-a key value pair in the extras map. The key in this case is "myMessage", and the value could be anything at all, we are
-just using a string.
-
-When we get the request passed back to the callback function, we print out the message we stored. This prints `seekrits`,
-just like it should. This is an easy way to tunnel information from the request sending to completion without needing
-global variables.
-
-## Custom headers
-
-> This example sets the Max-Forwards header
-
-```javascript
-var request = new XMLHttpRequest();
-
-request.open("GET", "http://httpbin.org/get", true);
-request.setCallbackMethod("requestCompleted");
-request.addRequestHeader("Max-Forwards", "5");
-request.send();
-```
-
-Here we are attaching our own header to the HTTP request, in this case it is `Max-Forwards`. The method used is
-`.addRequestHeader(header, value)`, both arguments being strings.
-
-<aside class="warning">The request must be opened before adding request headers, or else errors will be thrown</aside>
+The XMLHttpRequests object has been removed in favor of the simpler, promise like [request](https://www.chattriggers.com/modules/v/request) module, its documentation can be found once downloaded.
