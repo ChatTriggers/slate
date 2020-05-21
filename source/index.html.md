@@ -61,13 +61,13 @@ module will be called ExampleModule. Our folder structure now looks like
 {
   "name": "ExampleModule",
   "creator": "YourNameHere",
-  "description": "Our first module!"
+  "description": "Our first module!",
+  "entry": "index.js"
 }
 ```
 
 
-If we intend to share our module through the 
-[ct.js website](https://chattriggers.com), we'll need a `metadata.json` file.
+All modules MUST have a `metadata.json` file.
 This file contains important information about our module. You can see an
 example of this file to the right. The metadata file contains a number of 
 important fields, documented here:
@@ -77,9 +77,8 @@ important fields, documented here:
 - `version`: The version of the module. This should conform to 
   [SEMVER](https://semver.org/)
 - `entry`: This is the name of a file that should actually be ran. This key is
-  necessary if, for example, your module registers triggers or commands. An 
-  example of when you wouldn't want to use this field is if your module is a 
-  library, meaning that it is only used by other modules
+  necessary if, for example, your module registers triggers or commands. This field is
+  **REQUIRED** for all modules, without it your module will NOT run.
 - `requires`: An array of names of other modules that your module depends on.
   These modules are guaranteed to be loaded before your module, allowing you to 
   use them directly.
@@ -174,12 +173,20 @@ We are interested in the message parameter. We simply check if it contains the w
 
 ## Module Organization
 
-When making a module, it is important to know how ct.js loads your files so you can organize them efficiently. When your module is loaded, the root folder and any subfolders are scanned for files of the correct type (for example, `.js` files) and are loaded as one big file. 
+> ES6 style import syntax (preferred)
 
-Those with previous programming experience with Javascript may be familiar with NodeJS's `require` system, where in order to get access to code in another file, you have to call a function and provide the file path. In ct.js, all of your module files are compiled into one big file and loaded at once. This means that if you define a global variable in one file, you can use it immediately in any other file in your module.
+```js
+// This imports a function from WhereAmI's index file, you could specify additional files i.e. WhereAmI/otherfile.js
+import playerLocation from 'WhereAmi';
+```
 
-In fact, all modules share the same global namespace. This means that if you define a global variable in your module, you can access it from any other module*. Because the global namespace is shared with all modules, it is highly recommended **NOT** to use common variable names, such as `x` or `player`, as global variable names. 
+> Node style require syntax
 
-One way to handle global variables is to prefix any of your global variables with your module name, decreasing the chance of someone else using the same variable name. Another way is to define a single global object to store all of your variables and functions.
+```js
+// This imports a function from another module, called WhereAmI, to get a players location
+let playerLocation = require('../WhereAmI/index.js');
+```
 
-<aside class="warning">*In order to use variables and function defined in other modules, you must list those module names in your module's <code>required</code> array in the <code>metadata.json</code> file</aside>
+When making a module, it is important to know how ct.js loads your files so you can organize them efficiently. When your module is loaded, only the file specified as the entry in `metadata.json` is loaded. Any other code you want to run must be imported, through the `require` syntax, or ES6 style `import` syntax.
+
+<aside class="warning">In order to use variables and function defined in other modules, you must list those module names in your module's <code>requires</code> array in the <code>metadata.json</code> file, and then import them as needed</aside>
