@@ -78,7 +78,8 @@ important fields, documented here:
   [SEMVER](https://semver.org/)
 - `entry`: This is the name of a file that should actually be ran. This key is
   necessary if, for example, your module registers triggers or commands. This field is
-  **REQUIRED** for all modules, without it your module will NOT run.
+  **REQUIRED** for all modules that wish to run code, without it your module will NOT run.
+  If all your module provides is a library that other modules can use, this is not needed.
 - `requires`: An array of names of other modules that your module depends on.
   These modules are guaranteed to be loaded before your module, allowing you to 
   use them directly.
@@ -176,7 +177,9 @@ We are interested in the message parameter. We simply check if it contains the w
 > ES6 style import syntax (preferred)
 
 ```js
-// This imports a function from WhereAmI's index file, you could specify additional files i.e. WhereAmI/otherfile.js
+// This imports a function from WhereAmI's index file, you could specify additional files i.e. WhereAmI/otherfile
+// You can also import from other files within the current module using local file paths
+// ...such as ./folder/file (where folder resides within WhereAmI)
 import playerLocation from 'WhereAmi';
 ```
 
@@ -184,7 +187,7 @@ import playerLocation from 'WhereAmi';
 
 ```js
 // This imports a function from another module, called WhereAmI, to get a players location
-let playerLocation = require('../WhereAmI/index.js');
+let playerLocation = require('WhereAmI/index');
 ```
 
 When making a module, it is important to know how ct.js loads your files so you can organize them efficiently. When your module is loaded, only the file specified as the entry in `metadata.json` is loaded. Any other code you want to run must be imported, through the `require` syntax, or ES6 style `import` syntax.
