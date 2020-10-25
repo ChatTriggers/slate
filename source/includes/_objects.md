@@ -140,7 +140,7 @@ This aligns your display on the left side of the screen. Other options are `"cen
 display.setOrder("down");
 ```
 
-This renders the lines from 0 going downwards, usually what you'd want. Other options are `"up"`.
+This renders the lines from 0 going downwards, usually what you'd want. Other option is `"up"`.
 
 > This is how you set the exact position of the display
 
@@ -155,11 +155,11 @@ This sets the X and Y coordinate of where your display should start, with the fi
 > This sets the background color of the display
 
 ```javascript
-display.setBackgroundColor(RenderLib.ORANGE);
+display.setBackgroundColor(Renderer.AQUA);
 ```
 
-This makes the background color of the display orange. Other options are all the colors in RenderLib, or a custom color
-with `RenderLib.color(r, g, b, a)`.
+This makes the background color of the display aqua. Other options are all the colors in Renderer, or a custom color
+with `Renderer.color(r, g, b, a)`.
 
 > This sets the type of background for the display
 
@@ -174,10 +174,10 @@ a box around the entire display.
 > This sets the foreground (text) color of the display
 
 ```javascript
-display.setTextColor(RenderLib.BLUE);
+display.setTextColor(Renderer.BLUE);
 ```
 
-All text in the display will now show blue. This method can take any RenderLib color, including custom ones described above.
+All text in the display will now show blue. This method can take any Renderer color, including custom ones described above.
 
 # Guis
 
@@ -199,10 +199,10 @@ Like other objects, creating a Gui is very simple.
 
 ```javascript
 var gui = new Gui();
-gui.registerOnDraw("myGuiRenderFunction");
+gui.registerDraw(myGuiRenderFunction);
 
 function myGuiRenderFunction(mouseX, mouseY, partialTicks) {
-  RenderLib.drawRectangle(RenderLib.WHITE, mouseX, mouseY, 50, 50);
+  Renderer.drawRectangle(Renderer.WHITE, mouseX, mouseY, 50, 50);
 }
 ```
 
@@ -218,7 +218,7 @@ In this example, we render a 50x50 square with the top left corner being the use
 
 ```javascript
 var gui = new Gui();
-gui.registerOnKeyTyped("myGuiKeyTypedFunction");
+gui.registerKeyTyped(myGuiKeyTypedFunction);
 
 function myGuiKeyTypedFunction(typedChar, keyCode) {
   ChatLib.chat("You typed " + typedChar);
@@ -229,14 +229,14 @@ function myGuiKeyTypedFunction(typedChar, keyCode) {
 
 ```javascript
 var gui = new Gui();
-gui.registerOnClicked("myGuiClickedFunction");
-gui.registerOnDraw("myGuiRenderFunction");
+gui.registerClicked(myGuiClickedFunction);
+gui.registerDraw(myGuiRenderFunction);
 
 var renderSquareX = 0;
 var renderSquareY = 0;
 
 function myGuiRenderFunction(mouseX, mouseY, partialTicks) {
-  RenderLib.drawRectangle(RenderLib.WHITE, renderSquareX, renderSquareY, 50, 50);
+  Renderer.drawRectangle(Renderer.WHITE, renderSquareX, renderSquareY, 50, 50);
 }
 
 function myGuiClickedFunction(mouseX, mouseY, button) {
@@ -283,7 +283,7 @@ if a player pressed a key inside your Gui</aside>
 var wKeyBind = getKeyBindFromKey(Keyboard.KEY_W, "My W Key");
 
 function getKeyBindFromKey(key, description) {
-  var mcKeyBind = MinecraftVars.getKeyBindFromKey(key);
+  var mcKeyBind = Client.getKeyBindFromKey(key);
 
   if (mcKeyBind == null || mcKeyBind == undefined) {
       mcKeyBind = new KeyBind(description, key);
@@ -296,7 +296,7 @@ function getKeyBindFromKey(key, description) {
 Let's break this down. First, we call the function "getKeyBindFromKey" and save the result in a variable. This result
 is our finished KeyBind. We pass into this function a keyCode, from the [Keyboard](http://legacy.lwjgl.org/javadoc/org/lwjgl/input/Keyboard.html) class.
 
-Next, we have our function. First, it tries to get the Keybind for our specified key from MinecraftVars. We do this
+Next, we have our function. First, it tries to get the Keybind for our specified key from Client. We do this
 because if we want a keybind Minecraft already uses, we don't want to override it. However, if Minecraft isn't using
 that key (because the function returned null), we need to make our own, with the description and key we specified.
 
@@ -369,7 +369,7 @@ getPosY() | The Y coordinate of the block or entity | 30 (block), 30.18472 (enti
 getPosZ() | The Z coordinate of the block or entity | 30 (block), 30.18472 (entity)
 
 <br>
-The block-specific methods:
+Some block-specific methods:
 
 Method Name | Description | Example return value
 ------------|-------------|---------------------
@@ -421,21 +421,13 @@ isEntityHuman() | Whether or not the entity is human | true, false
 
 The Inventory object contains methods used for getting information about the user's inventory
 
-## InventorySlots
-
-The InventorySlot object is a subset of the Inventory object. An InventorySlot, as the name would suggest, is a
-common slot in the player inventory. For example, `InventorySlot.helmet` refers to the player's helmet.
-
-The valid InventorySlots are as follows:
-`hotbar1, hotbar2, ..., hotbar9; helmet, chestplate, leggings, boots`
-
 ## Methods
 
 > As an example, lets create a function to display information about the user's held item
 
 ```javascript
 function displayHeldItemInfo() {
-    var item = Inventory.getHeldItem();
+    var item = Player.getHeldItem();
 
     if (!item.isEmpty()) {
         var durabilityPercentage = Math.ceil(item.getDurability() / item.getMaxDurability() * 100);
@@ -452,13 +444,12 @@ function displayHeldItemInfo() {
 }
 ```
 
-All of the Inventory methods are shows below. Currently there is only one, but there may be more added in the future.
+All of the Player methods relating to Inventory are shown below.
 
 Method Name | Description | Example return value
 ------------|-------------|---------------------
-getHeldItem() | The player's currently held item | `InventorySlot.hotbar3`
-
-All of the InventorySlots share the same methods, which are listed below.
+getHeldItem() | The player's currently held item | `1xtile.stone@0`
+getHeldItemIndex() | The slot index of the item the player is holding | 0, 8
 
 Method Name | Description | Example return value
 ------------|-------------|---------------------
