@@ -202,7 +202,7 @@ var gui = new Gui();
 gui.registerDraw(myGuiRenderFunction);
 
 function myGuiRenderFunction(mouseX, mouseY, partialTicks) {
-  Renderer.drawRectangle(Renderer.WHITE, mouseX, mouseY, 50, 50);
+  Renderer.drawRect(Renderer.WHITE, mouseX, mouseY, 50, 50);
 }
 ```
 
@@ -236,7 +236,7 @@ var renderSquareX = 0;
 var renderSquareY = 0;
 
 function myGuiRenderFunction(mouseX, mouseY, partialTicks) {
-  Renderer.drawRectangle(Renderer.WHITE, renderSquareX, renderSquareY, 50, 50);
+  Renderer.drawRect(Renderer.WHITE, renderSquareX, renderSquareY, 50, 50);
 }
 
 function myGuiClickedFunction(mouseX, mouseY, button) {
@@ -433,13 +433,13 @@ function displayHeldItemInfo() {
         var durabilityPercentage = Math.ceil(item.getDurability() / item.getMaxDurability() * 100);
 
         // If NaN, that means it's a block
-        if (isNaN(durabilityPercentage)) durabilityPercentage = "N/A (not a tool!)"
+        if (isNaN(durabilityPercentage)) durabilityPercentage = "N/A (not a tool!)";
 
         ChatLib.chat("Item: " + item.getDisplayName());
         ChatLib.chat("Durability: " + durabilityPercentage + "%");
         ChatLib.chat("Stack Size: " + item.getStackSize());
     } else {
-        ChatLib.chat("&4You aren't holding anything!")
+        ChatLib.chat("&4You aren't holding anything!");
     }
 }
 ```
