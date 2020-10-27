@@ -12,9 +12,10 @@ Object | Description
 [Display](#displays) | Renders text on to the game screen
 [Gui](#guis) | Makes an openable gui in Minecraft
 [KeyBind](#keybinds) | Used for detecting a key's state
+[Player](#player) | Used for getting information about the player
 [Inventory](#inventory) | Contains information about the player's inventory
 Thread | This is a pseudo object, used to do tasks that take a long time
-CPS | Contains information about the player's clicks per second
+[CPS](#cps) | Contains information about the player's clicks per second
 ParticleEffect | Allows creation of custom particle effects to be displayed client side
 
 # Books
@@ -327,116 +328,71 @@ if you are holding down the key.
 Now, in the second example, we would only get the chat message once every time we press and hold the key. It only
 returns true one time per key press. If you let go and press again, it will return true once more.
 
-# LookingAt
+# Player
 
-**Note that some of this information may still be relevant, however the LookingAt object has been removed in favor of `Player.lookingAt()`**
+The Player object contains many methods used for retrieving information about the player.
 
-The LookingAt object contains many methods used for retrieving information about what the player is looking at.
+## Location
 
-## Types
-
-> You can determine the LookingAt type by calling getType()
+> To get the direction the player is facing, use this
 
 ```javascript
-if (LookingAt.getType() === "entity") {
-  // The player is looking at an entity
-} else if (LookingAt.getType() === "block") {
-  // The player is looking at a block
-} else {
-  // The player isn't looking at anything
+var direction = Player.facing();
+```
+
+> To get the coordinates of the player, you can use this
+
+```javascript
+var playerX = Player.getX();
+var playerY = Player.getY();
+var playerZ = Player.getZ();
+```
+
+Using this in conjunction with displays, you can make a coordinates HUD.
+
+```js
+register("tick", locationTracker);
+
+var display = new Display();
+display.setRenderLoc(10, 10);
+
+function locationTracker() {
+  display.setLine(0, "X: " + Player.getX());
+  display.setLine(1, "Y: " + Player.getY());
+  display.setLine(2, "Z: " + Player.getZ());
 }
 ```
 
-There are two types of things that the player can be looking at: entities and blocks. There are some methods that
-apply to both of these types, but most methods apply to either one or the other. If a method applies to only one
-type, it will have that type in the name (eg: `LookingAt.getEntityDisplayName()`).
+In this case, we just made a display, and every tick it updates to show the player's location.
 
-<aside class="notice">If the player isn't looking at anything (in other words, looking at air), these methods will
-return null. Additionally, calling a method that doesn't apply (ex: calling `getBlockid()` when the user is looking
-at an entity) will also return null.</aside>
+## Health
 
-## Methods
-
-Below is a list of all of the methods available _to both types_ in the `LookingAt` object:
-
-Method Name | Description | Example return value
-------------|-------------|---------------------
-getType() | The type of thing the player is looking at | "block" or "entity"
-getName() | The name of the block or entity | "Villager", "Diamond Block"
-getDistanceFromPlayer() | The distance of the block or entity from the player | 3.1882948
-getPosX() | The X coordinate of the block or entity | 30 (block), 30.18472 (entity)
-getPosY() | The Y coordinate of the block or entity | 30 (block), 30.18472 (entity)
-getPosZ() | The Z coordinate of the block or entity | 30 (block), 30.18472 (entity)
-
-<br>
-Some block-specific methods:
-
-Method Name | Description | Example return value
-------------|-------------|---------------------
-getBlockMetadata() | The block's metadata | 4
-getBlockUnlocalizedName() | The block's unlocalized name | "sandStone", "blockDiamond"
-getBlockRegistryName() | The block's registry name | "sandstone", "diamond_block"
-getBlockId() | The block's Minecraft id | 24, 57
-getBlockLightLevel() | The light level of the particular block face the player is looking at | 0, 15
-isBlockOnFire() | Whether or not the block is on fire | true, false
-
-<br>
-And finally, the entity-specific methods:
-
-> Examples of how to use getEntityNBTData()
+> You can not only get the player's health, hunger, active potion effects, but much more! Here's just a few
+> examples of how to get each part.
 
 ```javascript
-// Returns true if the wolf the user is looking at is angry, otherwise returns false
-function isWolfAngry() {
-  var NBTData = JSON.parse(LookingAt.getEntityNBTData());
-
-  if (LookingAt.getName() === "Wolf") {
-    return NBTData.Angry;
-  } else {
-    return false;
-  }
-}
+var health = Player.getHP();
+var hunger = Player.getHunger();
+var potions = Player.getActivePotionEffects();
+var xpLevel = Player.getXPLevel();
 ```
 
-> Function to display all the JSON keys of an entity's NBT data
+## Getting Inventory information
 
-```javascript
-function getNBTDataKeys() {
-  var NBTData = JSON.parse(LookingAt.getEntityNBTData());
-  ChatLib.chat(Object.keys(NBTData));
-}
-```
-
-Method Name | Description | Example return value
-------------|-------------|---------------------
-getEntityDisplayName() | The entity's display name | "kerbybit", null (for unnamed entities)
-getEntityMotionX() | The entity's motion in the X direction | 1.2049175
-getEntityMotionY() | The entity's motion in the Y direction | 1.2049175
-getEntityMotionZ() | The entity's motion in the Z direction | 1.2049175
-getEntityTeamName() | The entity's team name | "Blue team"
-getEntityNBTData() | A JSON string of the entity's nbt data | _See example for details_
-isEntityHuman() | Whether or not the entity is human | true, false
-
-# Inventory
-
-The Inventory object contains methods used for getting information about the user's inventory
-
-## Methods
-
-> As an example, lets create a function to display information about the user's held item
+> Here's an example showing how to find the durability and stack size of the item the player is holding.
 
 ```javascript
 function displayHeldItemInfo() {
     var item = Player.getHeldItem();
-
-    if (!item.isEmpty()) {
-        var durabilityPercentage = Math.ceil(item.getDurability() / item.getMaxDurability() * 100);
+    
+    if (item.getName() !== "tile.air.name") {
+        var durabilityPercentage = Math.ceil(item.getDurability() / item.getMaxDamage() * 100);
 
         // If NaN, that means it's a block
         if (isNaN(durabilityPercentage)) durabilityPercentage = "N/A (not a tool!)";
 
-        ChatLib.chat("Item: " + item.getDisplayName());
-        ChatLib.chat("Durability: " + durabilityPercentage + "%");
+        ChatLib.chat("Item: " + item.getName());
+        ChatLib.chat("Durability: " + durabilityPercentage);
         ChatLib.chat("Stack Size: " + item.getStackSize());
     } else {
         ChatLib.chat("&4You aren't holding anything!");
@@ -444,23 +400,52 @@ function displayHeldItemInfo() {
 }
 ```
 
-All of the Player methods relating to Inventory are shown below.
+In this case, we get the held item of the player. If the item isn't air, then it finds how damaged it is. If 
+the durability isn't a number, that means the item has to be a block. Then, if the player isn't holding anything, it
+runs the last piece of the code, which is when the hand is empty.
 
-Method Name | Description | Example return value
-------------|-------------|---------------------
-getHeldItem() | The player's currently held item | `1xtile.stone@0`
-getHeldItemIndex() | The slot index of the item the player is holding | 0, 8
+# Inventory
 
-Method Name | Description | Example return value
-------------|-------------|---------------------
-isEmpty() | Whether or not that inventory slot is empty | true, false
-isBlock() | Whether or not that inventory slot contains a block, as opposed to, say, a tool | true, false
-getDisplayName() | The item's display name | "Oak Fence", "Flint and Steel"
-getRegistryName() | The item's registry name | "fence", "flint_and_steel"
-getMaxDurability() | The item's max durability | 364, null (for blocks)
-getDurability() | The item's current durability | 115, null (for blocks)
-getStackSize() | The item's stack size | 1, 64
-getMetadata() | The item's metadata | 7
+The Inventory object contains methods used for getting information about the user's inventory.
+
+> This lets us see if the inventory has a sponge item in it, and if so, say the slot it's in.
+
+
+```javascript
+function hasSponge() {
+  var inventory = Player.getInventory();
+  
+  // The ID for sponge is 19.
+  var spongeSlot = inventory.indexOf(19);
+  
+  if (spongeSlot !== -1) {
+    ChatLib.chat("Sponge found in slot " + spongeSlot + "!");
+  } else {
+    ChatLib.chat("Sponge not found!");
+  }
+}
+```
+
+# CPS
+
+> The CPS object gives information about the clicks per second.
+
+## Clicks per second
+
+> To get the left clicks per second, use this
+
+```javascript
+var leftClicks = CPS.getLeftClicks();
+```
+
+> To get the right clicks per second, use this
+
+```javascript
+var rightClicks = CPS.getRightClicks();
+```
+
+There are more methods for the CPS object, but these are the most common. You can always see a full list
+of up to date documentation on the [JavaDocs](https://www.chattriggers.com/javadocs).
 
 # XMLHttpRequests
 
