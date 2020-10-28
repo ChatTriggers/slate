@@ -9,14 +9,14 @@ Create one in the global scope, and refer back to it.</aside>
 Object | Description
 ------ | -----------
 [Book](#books) | Makes an openable book in Minecraft
+[CPS](#cps) | Contains information about the player's clicks per second
 [Display](#displays) | Renders text on to the game screen
 [Gui](#guis) | Makes an openable gui in Minecraft
-[KeyBind](#keybinds) | Used for detecting a key's state
-[Player](#player) | Used for getting information about the player
 [Inventory](#inventory) | Contains information about the player's inventory
-Thread | This is a pseudo object, used to do tasks that take a long time
-[CPS](#cps) | Contains information about the player's clicks per second
+[KeyBind](#keybinds) | Used for detecting a key's state
 ParticleEffect | Allows creation of custom particle effects to be displayed client side
+[Player](#player) | Used for getting information about the player
+Thread | This is a pseudo object, used to do tasks that take a long time
 
 # Books
 
@@ -41,7 +41,7 @@ as explained below.
 var book = new Book("Example Book");
 
 book.addPage("This is a very simple page with just text.");
-book.addPage(new Message("This is a page with a ", ChatLib.hover("twist!", "Hi! I'm hover text :o")));
+book.addPage(new Message("This is a page with a ", new TextComponent("twist!").setHoverValue("Hi! I'm hover text :o")));
 ```
 
 To add content to our book, we'll want to utilize the `.addPage(message)` method. This can take either a simple
@@ -53,7 +53,7 @@ string as the message for the page, or a Message object if you want to utilize t
 > This is how to update a page's content
 
 ```javascript
-book.setPage(1, new Message("lul!"));
+book.setPage(1, new Message("lol!"));
 ```
 
 To set a page, we use the `.setPage(pageNumber, message)`. Page number is the number of the page you wish to update,
@@ -79,6 +79,27 @@ book.display(1);
 This is a very simple operation which just opens the book. You can also specify a page number to open the book to as
 the first argument, it defaults to 0. If the page you specify doesn't exist, the player will have to click one of the
 arrows to go to the next available page.
+
+# CPS
+
+> The CPS object gives information about the player's clicks per second.
+
+## Clicks per second
+
+> To get the left clicks per second, use this
+
+```javascript
+var leftClicks = CPS.getLeftClicks();
+```
+
+> To get the right clicks per second, use this
+
+```javascript
+var rightClicks = CPS.getRightClicks();
+```
+
+There are more methods for the CPS object, but these are the most common. You can always see a full list
+of up to date documentation on the [JavaDocs](https://www.chattriggers.com/javadocs).
 
 # Displays
 
@@ -123,7 +144,6 @@ display.setLine(3, "Now this line has text :)");
 In this example the call to `.setLine(lineNumber, message)` sets the 4th line in the display (0 based) which was previously
 blank to our example text. This is what we would use if we want to update a display with information, like the player's
 current coordinates.
-
 
 ## Setting positioning
 
@@ -208,7 +228,7 @@ function myGuiRenderFunction(mouseX, mouseY, partialTicks) {
 ```
 
 Everything inside of the "myGuiRenderFunction" will be ran while the gui is open. Inside of this function you should
-make use of the [RenderLib](#rendering) functions to draw what you want on to the screen. The three arguments passed in
+make use of the [Renderer](#rendering) functions to draw what you want on to the screen. The three arguments passed in
 are the x coordinate of the user's mouse, the y coordinate of the users mouse, and the partial ticks.
 
 In this example, we render a 50x50 square with the top left corner being the user's mouse position.
@@ -268,6 +288,33 @@ gui.close();
 ```
 
 These very simple methods open and close the gui, and neither take any arguments.
+
+# Inventory
+
+The Inventory object contains methods used for getting information about the user's inventory.
+
+## Example
+
+> Looping through the inventory can be an intensive process if done rapidly
+
+```javascript
+function hasSponge() {
+  var inventory = Player.getInventory();
+  
+  // The ID for sponge is 19.
+  var spongeSlot = inventory.indexOf(19);
+  
+  if (spongeSlot !== -1) {
+    ChatLib.chat("Sponge found in slot " + spongeSlot + "!");
+  } else {
+    ChatLib.chat("Sponge not found!");
+  }
+}
+```
+
+The example above lets us see if the inventory has a sponge item in it, and if so, say the slot it's in. 
+This works by first getting the inventory of the player, then it gets the slot ID of sponge, if there is any. 
+If any slot has a sponge, it will output the slot, otherwise it will return -1.
 
 # KeyBinds
 
@@ -365,6 +412,13 @@ function locationTracker() {
 
 In this case, we just made a display, and every tick it updates to show the player's location.
 
+## LookingAt
+
+> The LookingAt object was replaced with the Player.lookingAt() method.
+
+This gets the current object that the player is looking at, whether that be a block or an entity. It returns 
+either the `Block`, `Sign`, `Entity` class, or an air block when not looking at anything.
+
 ## Health
 
 > You can not only get the player's health, hunger, active potion effects, but much more! Here's just a few
@@ -376,6 +430,17 @@ var hunger = Player.getHunger();
 var potions = Player.getActivePotionEffects();
 var xpLevel = Player.getXPLevel();
 ```
+
+## Armor
+
+> To get the player's armor, you can use `Player.armor`
+
+```javascript
+var helmet = Player.armor.getHelmet();
+```
+
+This would return the item that is in the helmet slot of the player. This can be a pumpkin or any item
+that is on the helmet slot.
 
 ## Getting Inventory information
 
@@ -403,49 +468,6 @@ function displayHeldItemInfo() {
 In this case, we get the held item of the player. If the item isn't air, then it finds how damaged it is. If 
 the durability isn't a number, that means the item has to be a block. Then, if the player isn't holding anything, it
 runs the last piece of the code, which is when the hand is empty.
-
-# Inventory
-
-The Inventory object contains methods used for getting information about the user's inventory.
-
-> This lets us see if the inventory has a sponge item in it, and if so, say the slot it's in.
-
-
-```javascript
-function hasSponge() {
-  var inventory = Player.getInventory();
-  
-  // The ID for sponge is 19.
-  var spongeSlot = inventory.indexOf(19);
-  
-  if (spongeSlot !== -1) {
-    ChatLib.chat("Sponge found in slot " + spongeSlot + "!");
-  } else {
-    ChatLib.chat("Sponge not found!");
-  }
-}
-```
-
-# CPS
-
-> The CPS object gives information about the clicks per second.
-
-## Clicks per second
-
-> To get the left clicks per second, use this
-
-```javascript
-var leftClicks = CPS.getLeftClicks();
-```
-
-> To get the right clicks per second, use this
-
-```javascript
-var rightClicks = CPS.getRightClicks();
-```
-
-There are more methods for the CPS object, but these are the most common. You can always see a full list
-of up to date documentation on the [JavaDocs](https://www.chattriggers.com/javadocs).
 
 # XMLHttpRequests
 
