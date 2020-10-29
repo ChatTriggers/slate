@@ -45,7 +45,7 @@ book.addPage(new Message("This is a page with a ", new TextComponent("twist!").s
 ```
 
 To add content to our book, we'll want to utilize the `.addPage(message)` method. This can take either a simple
-string as the message for the page, or a Message object if you want to utilize the functionality the provide, covered
+string as the message for the page, or a `Message` object if you want to utilize the functionality the provide, covered
 [here](#message-objects). This should be done right after the instantiation of the book.
 
 ## Updating content
@@ -57,7 +57,7 @@ book.setPage(1, new Message("lol!"));
 ```
 
 To set a page, we use the `.setPage(pageNumber, message)`. Page number is the number of the page you wish to update,
-0 based. The message _has_ to be a Message object, there is no method for just a string.
+0 based. The message _has_ to be a `Message` object, there is no method for just a string.
 
 This can be done anytime, just re-display the book to see the updated version. The page you try to set must already exist,
 or else there will be errors. Just add the page if you need to add a new page afterwards.
@@ -291,7 +291,8 @@ These very simple methods open and close the gui, and neither take any arguments
 
 # Inventory
 
-The Inventory object contains methods used for getting information about the user's inventory.
+The Inventory object contains methods used for getting information about the user's inventory. It can be called
+through `Player.getInventory()`. More about the `Player` class can be found [later](#player).
 
 ## Example
 
