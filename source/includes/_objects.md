@@ -6,21 +6,21 @@ Minecraft code. A list is found below.
 <aside class="warning">It is bad practice to create new object every time you use it, they're heavy objects.
 Create one in the global scope, and refer back to it.</aside>
 
-Object | Description
------- | -----------
-[Book](#books) | Makes an openable book in Minecraft
-[CPS](#cps) | Contains information about the player's clicks per second
-[Display](#displays) | Renders text on to the game screen
-[Gui](#guis) | Makes an openable gui in Minecraft
-[Inventory](#inventory) | Contains information about the player's inventory
-[KeyBind](#keybinds) | Used for detecting a key's state
-ParticleEffect | Allows creation of custom particle effects to be displayed client side
-[Player](#player) | Used for getting information about the player
-Thread | This is a pseudo object, used to do tasks that take a long time
+| Object                  | Description                                                            |
+| ----------------------- | ---------------------------------------------------------------------- |
+| [Book](#books)          | Makes an openable book in Minecraft                                    |
+| [CPS](#cps)             | Contains information about the player's clicks per second              |
+| [Display](#displays)    | Renders text on to the game screen                                     |
+| [Gui](#guis)            | Makes an openable gui in Minecraft                                     |
+| [Inventory](#inventory) | Contains information about the player's inventory                      |
+| [KeyBind](#keybinds)    | Used for detecting a key's state                                       |
+| ParticleEffect          | Allows creation of custom particle effects to be displayed client side |
+| [Player](#player)       | Used for getting information about the player                          |
+| Thread                  | This is a pseudo object, used to do tasks that take a long time        |
 
 # Books
 
-Book objects are used for displaying base Minecraft book GUIs with customizable text.
+`Book` objects are used for displaying base Minecraft book GUIs with customizable text.
 
 ## Creation
 
@@ -82,7 +82,7 @@ arrows to go to the next available page.
 
 # CPS
 
-> The CPS object gives information about the player's clicks per second.
+> The `CPS` object gives information about the player's clicks per second.
 
 ## Clicks per second
 
@@ -98,7 +98,7 @@ var leftClicks = CPS.getLeftClicks();
 var rightClicks = CPS.getRightClicks();
 ```
 
-There are more methods for the CPS object, but these are the most common. You can always see a full list
+There are more methods for the `CPS` object, but these are the most common. You can always see a full list
 of up to date documentation on the [JavaDocs](https://www.chattriggers.com/javadocs).
 
 # Displays
@@ -108,13 +108,13 @@ functions found in [the rendering section](#rendering), use custom rendering fun
 
 ## Creation
 
-> This is how you can create a Display object
+> This is how you can create a `Display` object
 
 ```javascript
 var display = new Display();
 ```
 
-This display object is now created, but it doesn't do much of anything yet.
+This `Display` object is now instantiated, but it doesn't do much of anything yet.
 
 ## Adding content
 
@@ -126,9 +126,10 @@ var display = new Display();
 display.addLine("Ay! First line.");
 display.addLines("2nd line", "3rd line");
 display.addLines(2);
+display.addLine(new DisplayLine("2 line gap above me!"));
 ```
 
-Displays consist of lines of text. These lines can be added and set, and they can use color codes. The first call to
+`Displays` consist of lines of text. These lines can be added and set, and they can use color codes. The first call to
 `.addLine(message)` adds a line to the display with the text passed in. The second call to `.addLines(messages...)` adds
 as many lines as you pass into it, in our case just 2. The final call to `.addLines(number)` adds as many lines as
 you pass in, this is used for setting lines later that you don't want to say anything yet.
@@ -161,7 +162,7 @@ This aligns your display on the left side of the screen. Other options are `"cen
 display.setOrder("down");
 ```
 
-This renders the lines from 0 going downwards, usually what you'd want. Other option is `"up"`.
+This renders the lines from 0 going downwards, usually what you'd want. The other option is `"up"`.
 
 > This is how you set the exact position of the display
 
@@ -169,7 +170,7 @@ This renders the lines from 0 going downwards, usually what you'd want. Other op
 display.setRenderLoc(10, 10);
 ```
 
-This sets the X and Y coordinate of where your display should start, with the first argument being X, and the second Y.
+This sets the X and Y coordinate of where your display should start, with the first argument being X, and the second being Y.
 
 ## Setting background and foreground options
 
@@ -199,6 +200,16 @@ display.setTextColor(Renderer.BLUE);
 ```
 
 All text in the display will now show blue. This method can take any Renderer color, including custom ones described above.
+
+DisplayLine can also be used to set the text color, background color, and alignment for a specific line.
+
+```javascript
+display.addLine(
+  new DisplayLine("This will have green text!").setTextColor(Renderer.GREEN)
+);
+```
+
+This will set the new line to have green text, overriding the blue we set earlier.
 
 # Guis
 
@@ -294,17 +305,17 @@ These very simple methods open and close the gui, and neither take any arguments
 The Inventory object contains methods used for getting information about the user's inventory. It can be called
 through `Player.getInventory()`. More about the `Player` class can be found [later](#player).
 
-## Example
+<aside class="warning">Looping through the inventory can be an intensive process if done rapidly.</aside>
 
-> Looping through the inventory can be an intensive process if done rapidly
+## Example
 
 ```javascript
 function hasSponge() {
   var inventory = Player.getInventory();
-  
+
   // The ID for sponge is 19.
   var spongeSlot = inventory.indexOf(19);
-  
+
   if (spongeSlot !== -1) {
     ChatLib.chat("Sponge found in slot " + spongeSlot + "!");
   } else {
@@ -313,8 +324,8 @@ function hasSponge() {
 }
 ```
 
-The example above lets us see if the inventory has a sponge item in it, and if so, say the slot it's in. 
-This works by first getting the inventory of the player, then it gets the slot ID of sponge, if there is any. 
+The example above lets us see if the inventory has a sponge item in it, and if so, say the slot it's in.
+This works by first getting the inventory of the player, then it gets the slot ID of sponge, if there is any.
 If any slot has a sponge, it will output the slot, otherwise it will return -1.
 
 # KeyBinds
@@ -335,7 +346,7 @@ function getKeyBindFromKey(key, description) {
   var mcKeyBind = Client.getKeyBindFromKey(key);
 
   if (mcKeyBind == null || mcKeyBind == undefined) {
-      mcKeyBind = new KeyBind(description, key);
+    mcKeyBind = new KeyBind(description, key);
   }
 
   return mcKeyBind;
@@ -358,7 +369,7 @@ to a different key).
 
 ```javascript
 if (wKeyBind.isKeyDown()) {
-    ChatLib.chat("Key is down!");
+  ChatLib.chat("Key is down!");
 }
 ```
 
@@ -366,7 +377,7 @@ if (wKeyBind.isKeyDown()) {
 
 ```javascript
 if (wKeyBind.isPressed()) {
-    ChatLib.chat("Key is pressed!");
+  ChatLib.chat("Key is pressed!");
 }
 ```
 
@@ -378,7 +389,7 @@ returns true one time per key press. If you let go and press again, it will retu
 
 # Player
 
-The Player object contains many methods used for retrieving information about the player.
+The `Player` object contains many methods used for retrieving information about the player.
 
 ## Location
 
@@ -415,9 +426,9 @@ In this case, we just made a display, and every tick it updates to show the play
 
 ## LookingAt
 
-> The LookingAt object was replaced with the Player.lookingAt() method.
+> The `LookingAt` object was replaced with the `Player.lookingAt()` method.
 
-This gets the current object that the player is looking at, whether that be a block or an entity. It returns 
+This gets the current object that the player is looking at, whether that be a block or an entity. It returns
 either the `Block`, `Sign`, `Entity` class, or an air block when not looking at anything.
 
 ## Health
@@ -449,26 +460,29 @@ that is on the helmet slot.
 
 ```javascript
 function displayHeldItemInfo() {
-    var item = Player.getHeldItem();
-    
-    if (item.getName() !== "tile.air.name") {
-        var durabilityPercentage = Math.ceil(item.getDurability() / item.getMaxDamage() * 100);
+  var item = Player.getHeldItem();
 
-        // If NaN, that means it's a block
-        if (isNaN(durabilityPercentage)) durabilityPercentage = "N/A (not a tool!)";
+  if (item.getName() !== "tile.air.name") {
+    var durabilityPercentage = Math.ceil(
+      (item.getDurability() / item.getMaxDamage()) * 100
+    );
 
-        ChatLib.chat("Item: " + item.getName());
-        ChatLib.chat("Durability: " + durabilityPercentage);
-        ChatLib.chat("Stack Size: " + item.getStackSize());
-    } else {
-        ChatLib.chat("&4You aren't holding anything!");
-    }
+    // If NaN, that means it's a block
+    if (isNaN(durabilityPercentage)) durabilityPercentage = "N/A (not a tool!)";
+
+    ChatLib.chat("Item: " + item.getName());
+    ChatLib.chat("Durability: " + durabilityPercentage);
+    ChatLib.chat("Stack Size: " + item.getStackSize());
+  } else {
+    ChatLib.chat("&4You aren't holding anything!");
+  }
 }
 ```
 
-In this case, we get the held item of the player. If the item isn't air, then it finds how damaged it is. If 
+In this case, we get the held item of the player. If the item isn't air, then it finds how damaged it is. If
 the durability isn't a number, that means the item has to be a block. Then, if the player isn't holding anything, it
 runs the last piece of the code, which is when the hand is empty.
+If you want to get the player's inventory as a list of `Items`, use `Player.getInventory()`.
 
 # XMLHttpRequests
 
