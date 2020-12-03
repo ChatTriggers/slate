@@ -114,7 +114,7 @@ functions found in [the rendering section](#rendering), use custom rendering fun
 var display = new Display();
 ```
 
-This `Display` object is now instantiated, but it doesn't do much of anything yet.
+This `Display` object is now created, but it doesn't do much of anything yet.
 
 ## Adding content
 
@@ -305,8 +305,6 @@ These very simple methods open and close the gui, and neither take any arguments
 The Inventory object contains methods used for getting information about the user's inventory. It can be called
 through `Player.getInventory()`. More about the `Player` class can be found [later](#player).
 
-<aside class="warning">Looping through the inventory can be an intensive process if done rapidly.</aside>
-
 ## Example
 
 ```javascript
@@ -483,7 +481,3 @@ In this case, we get the held item of the player. If the item isn't air, then it
 the durability isn't a number, that means the item has to be a block. Then, if the player isn't holding anything, it
 runs the last piece of the code, which is when the hand is empty.
 If you want to get the player's inventory as a list of `Items`, use `Player.getInventory()`.
-
-# XMLHttpRequests
-
-The XMLHttpRequests object has been removed in favor of the simpler, promise like [request](https://www.chattriggers.com/modules/v/request) module, its documentation can be found once downloaded.
