@@ -6,20 +6,21 @@ Minecraft code. A list is found below.
 <aside class="warning">It is bad practice to create new object every time you use it, they're heavy objects.
 Create one in the global scope, and refer back to it.</aside>
 
-Object | Description
------- | -----------
-[Book](#books) | Makes an openable book in Minecraft
-[Display](#displays) | Renders text on to the game screen
-[Gui](#guis) | Makes an openable gui in Minecraft
-[KeyBind](#keybinds) | Used for detecting a key's state
-[Inventory](#inventory) | Contains information about the player's inventory
-Thread | This is a pseudo object, used to do tasks that take a long time
-CPS | Contains information about the player's clicks per second
-ParticleEffect | Allows creation of custom particle effects to be displayed client side
+| Object                  | Description                                                            |
+| ----------------------- | ---------------------------------------------------------------------- |
+| [Book](#books)          | Makes an openable book in Minecraft                                    |
+| [CPS](#cps)             | Contains information about the player's clicks per second              |
+| [Display](#displays)    | Renders text on to the game screen                                     |
+| [Gui](#guis)            | Makes an openable gui in Minecraft                                     |
+| [Inventory](#inventory) | Contains information about the player's inventory                      |
+| [KeyBind](#keybinds)    | Used for detecting a key's state                                       |
+| ParticleEffect          | Allows creation of custom particle effects to be displayed client side |
+| [Player](#player)       | Used for getting information about the player                          |
+| Thread                  | This is a pseudo object, used to do tasks that take a long time        |
 
 # Books
 
-Book objects are used for displaying base Minecraft book GUIs with customizable text.
+`Book` objects are used for displaying base Minecraft book GUIs with customizable text.
 
 ## Creation
 
@@ -40,11 +41,11 @@ as explained below.
 var book = new Book("Example Book");
 
 book.addPage("This is a very simple page with just text.");
-book.addPage(new Message("This is a page with a ", ChatLib.hover("twist!", "Hi! I'm hover text :o")));
+book.addPage(new Message("This is a page with a ", new TextComponent("twist!").setHoverValue("Hi! I'm hover text :o")));
 ```
 
 To add content to our book, we'll want to utilize the `.addPage(message)` method. This can take either a simple
-string as the message for the page, or a Message object if you want to utilize the functionality the provide, covered
+string as the message for the page, or a `Message` object if you want to utilize the functionality the provide, covered
 [here](#message-objects). This should be done right after the instantiation of the book.
 
 ## Updating content
@@ -52,11 +53,11 @@ string as the message for the page, or a Message object if you want to utilize t
 > This is how to update a page's content
 
 ```javascript
-book.setPage(1, new Message("lul!"));
+book.setPage(1, new Message("lol!"));
 ```
 
 To set a page, we use the `.setPage(pageNumber, message)`. Page number is the number of the page you wish to update,
-0 based. The message _has_ to be a Message object, there is no method for just a string.
+0 based. The message _has_ to be a `Message` object, there is no method for just a string.
 
 This can be done anytime, just re-display the book to see the updated version. The page you try to set must already exist,
 or else there will be errors. Just add the page if you need to add a new page afterwards.
@@ -79,6 +80,27 @@ This is a very simple operation which just opens the book. You can also specify 
 the first argument, it defaults to 0. If the page you specify doesn't exist, the player will have to click one of the
 arrows to go to the next available page.
 
+# CPS
+
+> The `CPS` object gives information about the player's clicks per second.
+
+## Clicks per second
+
+> To get the left clicks per second, use this
+
+```javascript
+var leftClicks = CPS.getLeftClicks();
+```
+
+> To get the right clicks per second, use this
+
+```javascript
+var rightClicks = CPS.getRightClicks();
+```
+
+There are more methods for the `CPS` object, but these are the most common. You can always see a full list
+of up to date documentation on the [JavaDocs](https://www.chattriggers.com/javadocs).
+
 # Displays
 
 Displays are used for rendering simple text on to the players screen. If you would like to utilize other rendering
@@ -86,13 +108,13 @@ functions found in [the rendering section](#rendering), use custom rendering fun
 
 ## Creation
 
-> This is how you can create a Display object
+> This is how you can create a `Display` object
 
 ```javascript
 var display = new Display();
 ```
 
-This display object is now created, but it doesn't do much of anything yet.
+This `Display` object is now created, but it doesn't do much of anything yet.
 
 ## Adding content
 
@@ -104,9 +126,10 @@ var display = new Display();
 display.addLine("Ay! First line.");
 display.addLines("2nd line", "3rd line");
 display.addLines(2);
+display.addLine(new DisplayLine("2 line gap above me!"));
 ```
 
-Displays consist of lines of text. These lines can be added and set, and they can use color codes. The first call to
+`Displays` consist of lines of text. These lines can be added and set, and they can use color codes. The first call to
 `.addLine(message)` adds a line to the display with the text passed in. The second call to `.addLines(messages...)` adds
 as many lines as you pass into it, in our case just 2. The final call to `.addLines(number)` adds as many lines as
 you pass in, this is used for setting lines later that you don't want to say anything yet.
@@ -122,7 +145,6 @@ display.setLine(3, "Now this line has text :)");
 In this example the call to `.setLine(lineNumber, message)` sets the 4th line in the display (0 based) which was previously
 blank to our example text. This is what we would use if we want to update a display with information, like the player's
 current coordinates.
-
 
 ## Setting positioning
 
@@ -140,7 +162,7 @@ This aligns your display on the left side of the screen. Other options are `"cen
 display.setOrder("down");
 ```
 
-This renders the lines from 0 going downwards, usually what you'd want. Other options are `"up"`.
+This renders the lines from 0 going downwards, usually what you'd want. The other option is `"up"`.
 
 > This is how you set the exact position of the display
 
@@ -148,18 +170,18 @@ This renders the lines from 0 going downwards, usually what you'd want. Other op
 display.setRenderLoc(10, 10);
 ```
 
-This sets the X and Y coordinate of where your display should start, with the first argument being X, and the second Y.
+This sets the X and Y coordinate of where your display should start, with the first argument being X, and the second being Y.
 
 ## Setting background and foreground options
 
 > This sets the background color of the display
 
 ```javascript
-display.setBackgroundColor(RenderLib.ORANGE);
+display.setBackgroundColor(Renderer.AQUA);
 ```
 
-This makes the background color of the display orange. Other options are all the colors in RenderLib, or a custom color
-with `RenderLib.color(r, g, b, a)`.
+This makes the background color of the display aqua. Other options are all the colors in Renderer, or a custom color
+with `Renderer.color(r, g, b, a)`.
 
 > This sets the type of background for the display
 
@@ -174,10 +196,20 @@ a box around the entire display.
 > This sets the foreground (text) color of the display
 
 ```javascript
-display.setTextColor(RenderLib.BLUE);
+display.setTextColor(Renderer.BLUE);
 ```
 
-All text in the display will now show blue. This method can take any RenderLib color, including custom ones described above.
+All text in the display will now show blue. This method can take any Renderer color, including custom ones described above.
+
+DisplayLine can also be used to set the text color, background color, and alignment for a specific line.
+
+```javascript
+display.addLine(
+  new DisplayLine("This will have green text!").setTextColor(Renderer.GREEN)
+);
+```
+
+This will set the new line to have green text, overriding the blue we set earlier.
 
 # Guis
 
@@ -199,15 +231,15 @@ Like other objects, creating a Gui is very simple.
 
 ```javascript
 var gui = new Gui();
-gui.registerOnDraw("myGuiRenderFunction");
+gui.registerDraw(myGuiRenderFunction);
 
 function myGuiRenderFunction(mouseX, mouseY, partialTicks) {
-  RenderLib.drawRectangle(RenderLib.WHITE, mouseX, mouseY, 50, 50);
+  Renderer.drawRect(Renderer.WHITE, mouseX, mouseY, 50, 50);
 }
 ```
 
 Everything inside of the "myGuiRenderFunction" will be ran while the gui is open. Inside of this function you should
-make use of the [RenderLib](#rendering) functions to draw what you want on to the screen. The three arguments passed in
+make use of the [Renderer](#rendering) functions to draw what you want on to the screen. The three arguments passed in
 are the x coordinate of the user's mouse, the y coordinate of the users mouse, and the partial ticks.
 
 In this example, we render a 50x50 square with the top left corner being the user's mouse position.
@@ -218,7 +250,7 @@ In this example, we render a 50x50 square with the top left corner being the use
 
 ```javascript
 var gui = new Gui();
-gui.registerOnKeyTyped("myGuiKeyTypedFunction");
+gui.registerKeyTyped(myGuiKeyTypedFunction);
 
 function myGuiKeyTypedFunction(typedChar, keyCode) {
   ChatLib.chat("You typed " + typedChar);
@@ -229,14 +261,14 @@ function myGuiKeyTypedFunction(typedChar, keyCode) {
 
 ```javascript
 var gui = new Gui();
-gui.registerOnClicked("myGuiClickedFunction");
-gui.registerOnDraw("myGuiRenderFunction");
+gui.registerClicked(myGuiClickedFunction);
+gui.registerDraw(myGuiRenderFunction);
 
 var renderSquareX = 0;
 var renderSquareY = 0;
 
 function myGuiRenderFunction(mouseX, mouseY, partialTicks) {
-  RenderLib.drawRectangle(RenderLib.WHITE, renderSquareX, renderSquareY, 50, 50);
+  Renderer.drawRect(Renderer.WHITE, renderSquareX, renderSquareY, 50, 50);
 }
 
 function myGuiClickedFunction(mouseX, mouseY, button) {
@@ -268,6 +300,32 @@ gui.close();
 
 These very simple methods open and close the gui, and neither take any arguments.
 
+# Inventory
+
+The Inventory object contains methods used for getting information about the user's inventory. It can be called
+through `Player.getInventory()`. More about the `Player` class can be found [later](#player).
+
+## Example
+
+```javascript
+function hasSponge() {
+  var inventory = Player.getInventory();
+
+  // The ID for sponge is 19.
+  var spongeSlot = inventory.indexOf(19);
+
+  if (spongeSlot !== -1) {
+    ChatLib.chat("Sponge found in slot " + spongeSlot + "!");
+  } else {
+    ChatLib.chat("Sponge not found!");
+  }
+}
+```
+
+The example above lets us see if the inventory has a sponge item in it, and if so, say the slot it's in.
+This works by first getting the inventory of the player, then it gets the slot ID of sponge, if there is any.
+If any slot has a sponge, it will output the slot, otherwise it will return -1.
+
 # KeyBinds
 
 KeyBinds are used for detecting the state of a key.
@@ -283,10 +341,10 @@ if a player pressed a key inside your Gui</aside>
 var wKeyBind = getKeyBindFromKey(Keyboard.KEY_W, "My W Key");
 
 function getKeyBindFromKey(key, description) {
-  var mcKeyBind = MinecraftVars.getKeyBindFromKey(key);
+  var mcKeyBind = Client.getKeyBindFromKey(key);
 
   if (mcKeyBind == null || mcKeyBind == undefined) {
-      mcKeyBind = new KeyBind(description, key);
+    mcKeyBind = new KeyBind(description, key);
   }
 
   return mcKeyBind;
@@ -296,7 +354,7 @@ function getKeyBindFromKey(key, description) {
 Let's break this down. First, we call the function "getKeyBindFromKey" and save the result in a variable. This result
 is our finished KeyBind. We pass into this function a keyCode, from the [Keyboard](http://legacy.lwjgl.org/javadoc/org/lwjgl/input/Keyboard.html) class.
 
-Next, we have our function. First, it tries to get the Keybind for our specified key from MinecraftVars. We do this
+Next, we have our function. First, it tries to get the Keybind for our specified key from Client. We do this
 because if we want a keybind Minecraft already uses, we don't want to override it. However, if Minecraft isn't using
 that key (because the function returned null), we need to make our own, with the description and key we specified.
 
@@ -309,7 +367,7 @@ to a different key).
 
 ```javascript
 if (wKeyBind.isKeyDown()) {
-    ChatLib.chat("Key is down!");
+  ChatLib.chat("Key is down!");
 }
 ```
 
@@ -317,7 +375,7 @@ if (wKeyBind.isKeyDown()) {
 
 ```javascript
 if (wKeyBind.isPressed()) {
-    ChatLib.chat("Key is pressed!");
+  ChatLib.chat("Key is pressed!");
 }
 ```
 
@@ -327,150 +385,99 @@ if you are holding down the key.
 Now, in the second example, we would only get the chat message once every time we press and hold the key. It only
 returns true one time per key press. If you let go and press again, it will return true once more.
 
-# LookingAt
+# Player
 
-**Note that some of this information may still be relevant, however the LookingAt object has been removed in favor of `Player.lookingAt()`**
+The `Player` object contains many methods used for retrieving information about the player.
 
-The LookingAt object contains many methods used for retrieving information about what the player is looking at.
+## Location
 
-## Types
-
-> You can determine the LookingAt type by calling getType()
+> To get the direction the player is facing, use this
 
 ```javascript
-if (LookingAt.getType() === "entity") {
-  // The player is looking at an entity
-} else if (LookingAt.getType() === "block") {
-  // The player is looking at a block
-} else {
-  // The player isn't looking at anything
+var direction = Player.facing();
+```
+
+> To get the coordinates of the player, you can use this
+
+```javascript
+var playerX = Player.getX();
+var playerY = Player.getY();
+var playerZ = Player.getZ();
+```
+
+Using this in conjunction with displays, you can make a coordinates HUD.
+
+```js
+register("tick", locationTracker);
+
+var display = new Display();
+display.setRenderLoc(10, 10);
+
+function locationTracker() {
+  display.setLine(0, "X: " + Player.getX());
+  display.setLine(1, "Y: " + Player.getY());
+  display.setLine(2, "Z: " + Player.getZ());
 }
 ```
 
-There are two types of things that the player can be looking at: entities and blocks. There are some methods that
-apply to both of these types, but most methods apply to either one or the other. If a method applies to only one
-type, it will have that type in the name (eg: `LookingAt.getEntityDisplayName()`).
+In this case, we just made a display, and every tick it updates to show the player's location.
 
-<aside class="notice">If the player isn't looking at anything (in other words, looking at air), these methods will
-return null. Additionally, calling a method that doesn't apply (ex: calling `getBlockid()` when the user is looking
-at an entity) will also return null.</aside>
+## LookingAt
 
-## Methods
+> The `LookingAt` object was replaced with the `Player.lookingAt()` method.
 
-Below is a list of all of the methods available _to both types_ in the `LookingAt` object:
+This gets the current object that the player is looking at, whether that be a block or an entity. It returns
+either the `Block`, `Sign`, `Entity` class, or an air block when not looking at anything.
 
-Method Name | Description | Example return value
-------------|-------------|---------------------
-getType() | The type of thing the player is looking at | "block" or "entity"
-getName() | The name of the block or entity | "Villager", "Diamond Block"
-getDistanceFromPlayer() | The distance of the block or entity from the player | 3.1882948
-getPosX() | The X coordinate of the block or entity | 30 (block), 30.18472 (entity)
-getPosY() | The Y coordinate of the block or entity | 30 (block), 30.18472 (entity)
-getPosZ() | The Z coordinate of the block or entity | 30 (block), 30.18472 (entity)
+## Health
 
-<br>
-The block-specific methods:
-
-Method Name | Description | Example return value
-------------|-------------|---------------------
-getBlockMetadata() | The block's metadata | 4
-getBlockUnlocalizedName() | The block's unlocalized name | "sandStone", "blockDiamond"
-getBlockRegistryName() | The block's registry name | "sandstone", "diamond_block"
-getBlockId() | The block's Minecraft id | 24, 57
-getBlockLightLevel() | The light level of the particular block face the player is looking at | 0, 15
-isBlockOnFire() | Whether or not the block is on fire | true, false
-
-<br>
-And finally, the entity-specific methods:
-
-> Examples of how to use getEntityNBTData()
+> You can not only get the player's health, hunger, active potion effects, but much more! Here's just a few
+> examples of how to get each part.
 
 ```javascript
-// Returns true if the wolf the user is looking at is angry, otherwise returns false
-function isWolfAngry() {
-  var NBTData = JSON.parse(LookingAt.getEntityNBTData());
+var health = Player.getHP();
+var hunger = Player.getHunger();
+var potions = Player.getActivePotionEffects();
+var xpLevel = Player.getXPLevel();
+```
 
-  if (LookingAt.getName() === "Wolf") {
-    return NBTData.Angry;
+## Armor
+
+> To get the player's armor, you can use `Player.armor`
+
+```javascript
+var helmet = Player.armor.getHelmet();
+```
+
+This would return the item that is in the helmet slot of the player. This can be a pumpkin or any item
+that is on the helmet slot.
+
+## Getting Inventory information
+
+> Here's an example showing how to find the durability and stack size of the item the player is holding.
+
+```javascript
+function displayHeldItemInfo() {
+  var item = Player.getHeldItem();
+
+  if (item.getName() !== "tile.air.name") {
+    var durabilityPercentage = Math.ceil(
+      (item.getDurability() / item.getMaxDamage()) * 100
+    );
+
+    // If NaN, that means it's a block
+    if (isNaN(durabilityPercentage)) durabilityPercentage = "N/A (not a tool!)";
+
+    ChatLib.chat("Item: " + item.getName());
+    ChatLib.chat("Durability: " + durabilityPercentage);
+    ChatLib.chat("Stack Size: " + item.getStackSize());
   } else {
-    return false;
+    ChatLib.chat("&4You aren't holding anything!");
   }
 }
 ```
 
-> Function to display all the JSON keys of an entity's NBT data
-
-```javascript
-function getNBTDataKeys() {
-  var NBTData = JSON.parse(LookingAt.getEntityNBTData());
-  ChatLib.chat(Object.keys(NBTData));
-}
-```
-
-Method Name | Description | Example return value
-------------|-------------|---------------------
-getEntityDisplayName() | The entity's display name | "kerbybit", null (for unnamed entities)
-getEntityMotionX() | The entity's motion in the X direction | 1.2049175
-getEntityMotionY() | The entity's motion in the Y direction | 1.2049175
-getEntityMotionZ() | The entity's motion in the Z direction | 1.2049175
-getEntityTeamName() | The entity's team name | "Blue team"
-getEntityNBTData() | A JSON string of the entity's nbt data | _See example for details_
-isEntityHuman() | Whether or not the entity is human | true, false
-
-# Inventory
-
-The Inventory object contains methods used for getting information about the user's inventory
-
-## InventorySlots
-
-The InventorySlot object is a subset of the Inventory object. An InventorySlot, as the name would suggest, is a
-common slot in the player inventory. For example, `InventorySlot.helmet` refers to the player's helmet.
-
-The valid InventorySlots are as follows:
-`hotbar1, hotbar2, ..., hotbar9; helmet, chestplate, leggings, boots`
-
-## Methods
-
-> As an example, lets create a function to display information about the user's held item
-
-```javascript
-function displayHeldItemInfo() {
-    var item = Inventory.getHeldItem();
-
-    if (!item.isEmpty()) {
-        var durabilityPercentage = Math.ceil(item.getDurability() / item.getMaxDurability() * 100);
-
-        // If NaN, that means it's a block
-        if (isNaN(durabilityPercentage)) durabilityPercentage = "N/A (not a tool!)"
-
-        ChatLib.chat("Item: " + item.getDisplayName());
-        ChatLib.chat("Durability: " + durabilityPercentage + "%");
-        ChatLib.chat("Stack Size: " + item.getStackSize());
-    } else {
-        ChatLib.chat("&4You aren't holding anything!")
-    }
-}
-```
-
-All of the Inventory methods are shows below. Currently there is only one, but there may be more added in the future.
-
-Method Name | Description | Example return value
-------------|-------------|---------------------
-getHeldItem() | The player's currently held item | `InventorySlot.hotbar3`
-
-All of the InventorySlots share the same methods, which are listed below.
-
-Method Name | Description | Example return value
-------------|-------------|---------------------
-isEmpty() | Whether or not that inventory slot is empty | true, false
-isBlock() | Whether or not that inventory slot contains a block, as opposed to, say, a tool | true, false
-getDisplayName() | The item's display name | "Oak Fence", "Flint and Steel"
-getRegistryName() | The item's registry name | "fence", "flint_and_steel"
-getMaxDurability() | The item's max durability | 364, null (for blocks)
-getDurability() | The item's current durability | 115, null (for blocks)
-getStackSize() | The item's stack size | 1, 64
-getMetadata() | The item's metadata | 7
-
-# XMLHttpRequests
-
-The XMLHttpRequests object has been removed in favor of the simpler, promise like [request](https://www.chattriggers.com/modules/v/request) module, its documentation can be found once downloaded.
+In this case, we get the held item of the player. If the item isn't air, then it finds how damaged it is. If
+the durability isn't a number, that means the item has to be a block. Then, if the player isn't holding anything, it
+runs the last piece of the code, which is when the hand is empty.
+If you want to get the player's inventory as a list of `Items`, use `Player.getInventory()`.
