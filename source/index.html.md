@@ -160,7 +160,7 @@ register('messageSent', (message, event) => {
 
 ```js
 register('messageSent', (message, event) => {
-  if (message.toLowerCase().contains('ping')) {
+  if (message.toLowerCase().includes('ping')) {
     ChatLib.chat('Pong!');
   }
 });
