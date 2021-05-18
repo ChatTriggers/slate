@@ -6,9 +6,9 @@ more.
 
 ## Sending messages
 
->This sends a message in chat
+> This sends a client-side message in chat
 
-```javascript
+```js
 ChatLib.chat("Coming from the code!");
 ```
 
@@ -16,16 +16,16 @@ This first example shows how to display a basic chat message. This message diffe
 
 ## Message objects
 
->This example sends messages that have clickable and hoverable text
+> This example sends messages that have clickable and hoverable text
 
-```javascript
-var clickableMessage = new Message(
+```js
+const clickableMessage = new Message(
   "This is not clickable. ",
    new TextComponent("This is clickable").setClick("run_command", "/help"),
     "!"
 );
 
-var hoverableMessage = new TextComponent("This message does nothing when clicked.").setHoverValue("But it shows this text when hovered over!");
+const hoverableMessage = new TextComponent("This message does nothing when clicked.").setHoverValue("But it shows this text when hovered over!");
 
 ChatLib.chat(clickableMessage);
 ChatLib.chat(hoverableMessage);
@@ -53,7 +53,7 @@ or ran when the message is clicked.
 
 > This is how you send a chat message with an ID, and then delete it
 
-```javascript
+```js
 new Message("This will be deleted!").setChatLineId(5050).chat();
 
 ChatLib.clearChat(5050);
@@ -73,7 +73,7 @@ The ID is specified in the message object, and you pass the same ID to `ChatLib.
 
 > This is how you edit a chat message after it has been sent to chat
 
-```javascript
+```js
 ChatLib.chat("Hey there! This will change...");
 
 ChatLib.editChat("Hey there! This will change...", "And... changed!")
@@ -85,13 +85,13 @@ ChatLib.editChat("Hey there! This will change...", "And... changed!")
 
 > This is how you center a chat message
 
-```javascript
+```js
 ChatLib.chat(ChatLib.getCenteredText("This is in the center of the chat!"));
 ```
 
 > This is how you make a line break
 
-```javascript
+```js
 ChatLib.chat(ChatLib.getChatBreak("-"));
 ```
 
@@ -116,17 +116,17 @@ string, there will be a gap at the end where another use of the string will not 
 
 > This is how you get the unformatted message from a chat event
 
-```javascript
+```js
 function onChatReceived(event) {
-  var unformattedMessage = ChatLib.getChatMessage(event);
+  const unformattedMessage = ChatLib.getChatMessage(event);
 }
 ```
 
 > This is how you get the formatted message from a chat event
 
-```javascript
+```js
 function onChatReceived(event) {
-  var formattedMessage = ChatLib.getChatMessage(event, true);
+  const formattedMessage = ChatLib.getChatMessage(event, true);
 }
 ```
 

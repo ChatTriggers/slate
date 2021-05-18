@@ -1,6 +1,6 @@
 # Objects
 
-ct.js provides several objects to expand the functionality of your imports without you needing to delve into base
+ChatTriggers provides several objects to expand the functionality of your imports without you needing to delve into base
 Minecraft code. A list is found below.
 
 <aside class="warning">It is bad practice to create new object every time you use it, they're heavy objects.
@@ -26,8 +26,8 @@ Create one in the global scope, and refer back to it.</aside>
 
 > This is how you create a book
 
-```javascript
-var book = new Book("Example Book");
+```js
+const book = new Book("Example Book");
 ```
 
 We create our book with the Book constructor of `new Book(bookName);`. We want to create our book in the global scope,
@@ -37,8 +37,8 @@ as explained below.
 
 > This is how you add pages to the book
 
-```javascript
-var book = new Book("Example Book");
+```js
+const book = new Book("Example Book");
 
 book.addPage("This is a very simple page with just text.");
 book.addPage(new Message("This is a page with a ", new TextComponent("twist!").setHoverValue("Hi! I'm hover text :o")));
@@ -52,7 +52,7 @@ string as the message for the page, or a `Message` object if you want to utilize
 
 > This is how to update a page's content
 
-```javascript
+```js
 book.setPage(1, new Message("lol!"));
 ```
 
@@ -66,13 +66,13 @@ or else there will be errors. Just add the page if you need to add a new page af
 
 > This is how to display the book to the user
 
-```javascript
+```js
 book.display();
 ```
 
 > This is how to display the book starting on a certain page
 
-```javascript
+```js
 book.display(1);
 ```
 
@@ -88,14 +88,14 @@ arrows to go to the next available page.
 
 > To get the left clicks per second, use this
 
-```javascript
-var leftClicks = CPS.getLeftClicks();
+```js
+const leftClicks = CPS.getLeftClicks();
 ```
 
 > To get the right clicks per second, use this
 
-```javascript
-var rightClicks = CPS.getRightClicks();
+```js
+const rightClicks = CPS.getRightClicks();
 ```
 
 There are more methods for the `CPS` object, but these are the most common. You can always see a full list
@@ -110,19 +110,17 @@ functions found in [the rendering section](#rendering), use custom rendering fun
 
 > This is how you can create a `Display` object
 
-```javascript
-var display = new Display();
+```js
+const display = new Display();
 ```
 
 This `Display` object is now created, but it doesn't do much of anything yet.
 
 ## Adding content
 
-> This is how you add lines to a display
+> This is how you can add lines to a display
 
-```javascript
-var display = new Display();
-
+```js
 display.addLine("Ay! First line.");
 display.addLines("2nd line", "3rd line");
 display.addLines(2);
@@ -138,7 +136,7 @@ you pass in, this is used for setting lines later that you don't want to say any
 
 > This is how you set a line in a display
 
-```javascript
+```js
 display.setLine(3, "Now this line has text :)");
 ```
 
@@ -150,7 +148,7 @@ current coordinates.
 
 > This is how you set the alignment of a display
 
-```javascript
+```js
 display.setAlign("left");
 ```
 
@@ -158,7 +156,7 @@ This aligns your display on the left side of the screen. Other options are `"cen
 
 > This is how you set the order of the lines
 
-```javascript
+```js
 display.setOrder("down");
 ```
 
@@ -166,7 +164,7 @@ This renders the lines from 0 going downwards, usually what you'd want. The othe
 
 > This is how you set the exact position of the display
 
-```javascript
+```js
 display.setRenderLoc(10, 10);
 ```
 
@@ -176,7 +174,7 @@ This sets the X and Y coordinate of where your display should start, with the fi
 
 > This sets the background color of the display
 
-```javascript
+```js
 display.setBackgroundColor(Renderer.AQUA);
 ```
 
@@ -185,7 +183,7 @@ with `Renderer.color(r, g, b, a)`.
 
 > This sets the type of background for the display
 
-```javascript
+```js
 display.setBackground(DisplayHandler.Background.PER_LINE);
 ```
 
@@ -195,7 +193,7 @@ a box around the entire display.
 
 > This sets the foreground (text) color of the display
 
-```javascript
+```js
 display.setTextColor(Renderer.BLUE);
 ```
 
@@ -203,7 +201,7 @@ All text in the display will now show blue. This method can take any Renderer co
 
 DisplayLine can also be used to set the text color, background color, and alignment for a specific line.
 
-```javascript
+```js
 display.addLine(
   new DisplayLine("This will have green text!").setTextColor(Renderer.GREEN)
 );
@@ -219,8 +217,8 @@ Guis are screens that are opened in game, such as the chat gui, or the escape me
 
 > This is how you create a gui
 
-```javascript
-var gui = new Gui();
+```js
+const gui = new Gui();
 ```
 
 Like other objects, creating a Gui is very simple.
@@ -229,8 +227,7 @@ Like other objects, creating a Gui is very simple.
 
 > This is how you set up a function to render the gui
 
-```javascript
-var gui = new Gui();
+```js
 gui.registerDraw(myGuiRenderFunction);
 
 function myGuiRenderFunction(mouseX, mouseY, partialTicks) {
@@ -248,8 +245,7 @@ In this example, we render a 50x50 square with the top left corner being the use
 
 > This is how you detect when a user presses a key
 
-```javascript
-var gui = new Gui();
+```js
 gui.registerKeyTyped(myGuiKeyTypedFunction);
 
 function myGuiKeyTypedFunction(typedChar, keyCode) {
@@ -259,13 +255,12 @@ function myGuiKeyTypedFunction(typedChar, keyCode) {
 
 > This is how you detect when the user clicks
 
-```javascript
-var gui = new Gui();
+```js
 gui.registerClicked(myGuiClickedFunction);
 gui.registerDraw(myGuiRenderFunction);
 
-var renderSquareX = 0;
-var renderSquareY = 0;
+let renderSquareX = 0;
+let renderSquareY = 0;
 
 function myGuiRenderFunction(mouseX, mouseY, partialTicks) {
   Renderer.drawRect(Renderer.WHITE, renderSquareX, renderSquareY, 50, 50);
@@ -288,13 +283,13 @@ mouse was clicked.
 
 > To display the gui, use this
 
-```javascript
+```js
 gui.open();
 ```
 
 > To close the gui, use this
 
-```javascript
+```js
 gui.close();
 ```
 
@@ -307,12 +302,12 @@ through `Player.getInventory()`. More about the `Player` class can be found [lat
 
 ## Example
 
-```javascript
+```js
 function hasSponge() {
-  var inventory = Player.getInventory();
+  const inventory = Player.getInventory();
 
   // The ID for sponge is 19.
-  var spongeSlot = inventory.indexOf(19);
+  const spongeSlot = inventory.indexOf(19);
 
   if (spongeSlot !== -1) {
     ChatLib.chat("Sponge found in slot " + spongeSlot + "!");
@@ -337,11 +332,11 @@ if a player pressed a key inside your Gui</aside>
 
 > This is the preferred method to get a keybind
 
-```javascript
-var wKeyBind = getKeyBindFromKey(Keyboard.KEY_W, "My W Key");
+```js
+const wKeyBind = getKeyBindFromKey(Keyboard.KEY_W, "My W Key");
 
 function getKeyBindFromKey(key, description) {
-  var mcKeyBind = Client.getKeyBindFromKey(key);
+  let mcKeyBind = Client.getKeyBindFromKey(key);
 
   if (mcKeyBind == null || mcKeyBind == undefined) {
     mcKeyBind = new KeyBind(description, key);
@@ -351,10 +346,10 @@ function getKeyBindFromKey(key, description) {
 }
 ```
 
-Let's break this down. First, we call the function "getKeyBindFromKey" and save the result in a variable. This result
-is our finished KeyBind. We pass into this function a keyCode, from the [Keyboard](http://legacy.lwjgl.org/javadoc/org/lwjgl/input/Keyboard.html) class.
+Let's break this down. First, we call the function `getKeyBindFromKey` and save the result in a variable. This result
+is our finished `KeyBind`. We pass into this function a keyCode, from the [Keyboard](http://legacy.lwjgl.org/javadoc/org/lwjgl/input/Keyboard.html) class.
 
-Next, we have our function. First, it tries to get the Keybind for our specified key from Client. We do this
+Next, we have our function. First, it tries to get the `Keybind` for our specified key from `Client`. We do this
 because if we want a keybind Minecraft already uses, we don't want to override it. However, if Minecraft isn't using
 that key (because the function returned null), we need to make our own, with the description and key we specified.
 
@@ -365,7 +360,7 @@ to a different key).
 
 > To check if they key bind is being held, do this
 
-```javascript
+```js
 if (wKeyBind.isKeyDown()) {
   ChatLib.chat("Key is down!");
 }
@@ -373,7 +368,7 @@ if (wKeyBind.isKeyDown()) {
 
 > To check if the key bind was pressed, use this
 
-```javascript
+```js
 if (wKeyBind.isPressed()) {
   ChatLib.chat("Key is pressed!");
 }
@@ -393,16 +388,16 @@ The `Player` object contains many methods used for retrieving information about 
 
 > To get the direction the player is facing, use this
 
-```javascript
-var direction = Player.facing();
+```js
+const direction = Player.facing();
 ```
 
 > To get the coordinates of the player, you can use this
 
-```javascript
-var playerX = Player.getX();
-var playerY = Player.getY();
-var playerZ = Player.getZ();
+```js
+const playerX = Player.getX();
+const playerY = Player.getY();
+const playerZ = Player.getZ();
 ```
 
 Using this in conjunction with displays, you can make a coordinates HUD.
@@ -410,7 +405,7 @@ Using this in conjunction with displays, you can make a coordinates HUD.
 ```js
 register("tick", locationTracker);
 
-var display = new Display();
+const display = new Display();
 display.setRenderLoc(10, 10);
 
 function locationTracker() {
@@ -434,19 +429,19 @@ either the `Block`, `Sign`, `Entity` class, or an air block when not looking at 
 > You can not only get the player's health, hunger, active potion effects, but much more! Here's just a few
 > examples of how to get each part.
 
-```javascript
-var health = Player.getHP();
-var hunger = Player.getHunger();
-var potions = Player.getActivePotionEffects();
-var xpLevel = Player.getXPLevel();
+```js
+const health = Player.getHP();
+const hunger = Player.getHunger();
+const potions = Player.getActivePotionEffects();
+const xpLevel = Player.getXPLevel();
 ```
 
 ## Armor
 
 > To get the player's armor, you can use `Player.armor`
 
-```javascript
-var helmet = Player.armor.getHelmet();
+```js
+const helmet = Player.armor.getHelmet();
 ```
 
 This would return the item that is in the helmet slot of the player. This can be a pumpkin or any item
@@ -456,12 +451,12 @@ that is on the helmet slot.
 
 > Here's an example showing how to find the durability and stack size of the item the player is holding.
 
-```javascript
+```js
 function displayHeldItemInfo() {
-  var item = Player.getHeldItem();
+  const item = Player.getHeldItem();
 
   if (item.getName() !== "tile.air.name") {
-    var durabilityPercentage = Math.ceil(
+    let durabilityPercentage = Math.ceil(
       (item.getDurability() / item.getMaxDamage()) * 100
     );
 
@@ -480,4 +475,4 @@ function displayHeldItemInfo() {
 In this case, we get the held item of the player. If the item isn't air, then it finds how damaged it is. If
 the durability isn't a number, that means the item has to be a block. Then, if the player isn't holding anything, it
 runs the last piece of the code, which is when the hand is empty.
-If you want to get the player's inventory as a list of `Items`, use `Player.getInventory()`.
+If you want to get the player's inventory as a list of `Item`s, use `Player.getInventory()`.

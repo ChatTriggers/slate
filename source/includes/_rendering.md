@@ -10,7 +10,7 @@ calling methods in the `Renderer` object. 3D rendering involves calling methods 
 
 > Function to be ran everytime the game overlay is rendered
 
-```javascript
+```js
 register("renderOverlay", myRenderOverlay);
 
 function myRenderOverlay() {
@@ -24,7 +24,7 @@ Rendering has to be done every frame of the game, otherwise it will only be on t
 
 > It is possible to set a certain trigger's priority like so
 
-```javascript
+```js
 register("renderOverlay", myRenderOverlayLast).setPriority(Priority.LOWEST);
 register("renderOverlay", myRenderOverlayFirst).setPriority(Priority.HIGHEST);
 
@@ -46,7 +46,7 @@ Triggers with a priority of HIGHEST are ran first, because they have first say o
 
 > You can render text onto the screen with this code
 
-```javascript
+```js
 register("renderOverlay", myRenderOverlay);
 
 function myRenderOverlay() {
@@ -64,9 +64,10 @@ at 10, 10 (the top left corner).
 
 > This is how you would draw the same string (but colored) with an object
 
-```javascript
+```js
 register("renderOverlay", myRenderOverlay);
-var myTextObject = new Text("Hello World!", 10, 10).setColor(Renderer.RED);
+
+const myTextObject = new Text("Hello World!", 10, 10).setColor(Renderer.RED);
 
 function myRenderOverlay() {
   myTextObject.draw();
@@ -83,12 +84,12 @@ The other interesting part to take a look at is the call to `setColor`, which wi
 
 > This example renders a rectangle, circle, and triangle
 
-```javascript
+```js
 register("renderOverlay", myRenderOverlay);
 
-var rectangle = new Rectangle(Renderer.WHITE, 10, 10, 50, 50);
-var circle = new Shape(Renderer.WHITE).setCircle(100, 100, 25, 360);
-var polygon = new Shape(Renderer.WHITE)
+const rectangle = new Rectangle(Renderer.WHITE, 10, 10, 50, 50);
+const circle = new Shape(Renderer.WHITE).setCircle(100, 100, 25, 360);
+const polygon = new Shape(Renderer.WHITE)
   .addVertex(300, 300)
   .addVertex(400, 400)
   .addVertex(200, 400);
@@ -114,16 +115,16 @@ Finally, we manually configure the vertices of the last shape ourselves with the
 
 > This example renders the images on the screen
 
-```javascript
+```js
 register("renderOverlay", myRenderImageOverlay);
-var image = new Image("ctjs-logo.png", "http://ct.kerbybit.com/ct.js/images/logo.png");
+const image = new Image("ctjs-logo.png", "http://ct.kerbybit.com/ct.js/images/logo.png");
 
 function myRenderImageOverlay() {
   image.draw(100, 100);
 }
 ```
 
-As before, we register for a render overlay trigger so we can do our rendering in it. However, this time, we create an `Image` object with the file name and URL. The file will download to the ct.js assets directory, which defaults to `.minecraft/config/ChatTriggers/images`.
+As before, we register for a render overlay trigger so we can do our rendering in it. However, this time, we create an `Image` object with the file name and URL. The file will download to the ChatTriggers assets directory, which defaults to `.minecraft/config/ChatTriggers/images`.
 
 <aside class="notice">Images can also be put in /Imports/Example/assets/ for the same result, just make sure resource name is
 the name of the file, and the file has a <code>.png</code> extension.</aside>
@@ -132,12 +133,14 @@ the name of the file, and the file has a <code>.png</code> extension.</aside>
 
 > Here we are rendering text that is a rainbow color
 
-```javascript
+```js
 register("renderOverlay", myRenderOverlay);
-var exampleImportStep = 0;
 
+const text = new Text("Rainbows!", 10, 10);
+
+let exampleImportStep = 0;
 function myRenderOverlay() {
-  var text = new Text("Rainbows!", 10, 10).setColor(Renderer.getRainbow(exampleImportStep));
+  text.setColor(Renderer.getRainbow(exampleImportStep));
   text.draw();
 
   exampleImportStep++;
@@ -159,15 +162,15 @@ which we then use as the color for the drawString method.
 
 > This example showcases how to make render positioning dynamic
 
-```javascript
+```js
 register("renderOverlay", myRenderOverlay);
 
-var width = Renderer.screen.getWidth();
-var rectWidth = 50;
-var textStr = "White Text!";
+const width = Renderer.screen.getWidth();
+const rectWidth = 50;
+const textStr = "White Text!";
 
-var rectangle = new Rectangle(Renderer.WHITE, width / 2 - rectWidth / 2, 200, rectWidth, 50);
-var text = new Text(textStr, width / 2 - Renderer.getStringWidth(textStr) / 2, 100).setColor(Renderer.WHITE);
+const rectangle = new Rectangle(Renderer.WHITE, width / 2 - rectWidth / 2, 200, rectWidth, 50);
+const text = new Text(textStr, width / 2 - Renderer.getStringWidth(textStr) / 2, 100).setColor(Renderer.WHITE);
 
 function myRenderOverlay() {
   text.draw();
@@ -187,7 +190,7 @@ The Tessellator object is meant for rendering in 3 dimensions. You have to call 
 
 > You can set floating text at specific world coordinates using `Tessellator.drawString(text, x, y, z)`
 
-```javascript
+```js
 register("renderWorld", myWorldRender);
 
 function myWorldRender() {
@@ -203,10 +206,10 @@ the size increases from distance.
 
 > You can also draw specific textures like so
 
-```javascript
+```js
 register("renderWorld", myWorldRender);
 
-var img = new Image("kerbybit.png", "https://www.chattriggers.com/assets/images/kerbybit.png");
+const img = new Image("kerbybit.png", "https://www.chattriggers.com/assets/images/kerbybit.png");
 
 function myWorldRender() {
   Tessellator.bindTexture(img);
@@ -235,7 +238,7 @@ We use this because otherwise the animation would be jittery because there are f
 
 If we wanted to make the example from above not be jittery, we would use partial ticks.
 
-```javascript
+```js
 function myWorldRender(partialTicks) {
   const lastX = new Entity(Player.getPlayer()).getLastX();
   const lastY = new Entity(Player.getPlayer()).getLastY();
